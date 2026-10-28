@@ -58,6 +58,9 @@ The From address must be on a domain verified in Resend (contact@radbrothers.co.
 
 ## Changelog
 
+### 1.0.3
+- Mobile menu: header turns solid white straight away when the menu opens, so the logo and close icon no longer disappear into the dark hero
+
 ### 1.0.2
 - Comparison table on mobile: dropped the navy column, Full Service is highlighted with an orange title and ticks instead
 
