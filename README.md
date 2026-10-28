@@ -58,6 +58,9 @@ The From address must be on a domain verified in Resend (contact@radbrothers.co.
 
 ## Changelog
 
+### 1.0.2
+- Comparison table on mobile: dropped the navy column, Full Service is highlighted with an orange title and ticks instead
+
 ### 1.0.1
 - Header, hero and mobile menu allow for the WordPress admin bar
 - Comparison table fits on mobile (no sideways scrolling)

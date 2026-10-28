@@ -544,6 +544,10 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 	.cmp thead .is-highlight { border-radius: 12px 12px 0 0; }
 	.cmp-text { font-size: .8rem; line-height: 1.25; }
 	.cmp-yes { width: 26px; height: 26px; }
+	/* No navy column on phones: it gets broken up by the feature labels. Highlight with the orange tick and title instead. */
+	.cmp .is-highlight { background: none; color: inherit; border-color: var(--line); }
+	.cmp thead .is-highlight span { color: var(--muted); }
+	.cmp thead .is-highlight strong { color: var(--orange-dark); }
 }
 
 /* ---------- FAQ ---------- */
