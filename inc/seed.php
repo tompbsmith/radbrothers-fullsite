@@ -37,6 +37,29 @@ add_action( 'admin_post_rb_seed', function () {
 	exit;
 } );
 
+// Permanent home for the import: Appearance → Starter content.
+add_action( 'admin_menu', function () {
+	add_theme_page( 'Starter content', 'Starter content', 'manage_options', 'rb-starter-content', function () {
+		$url     = wp_nonce_url( admin_url( 'admin-post.php?action=rb_seed' ), 'rb_seed' );
+		$seeded  = get_option( 'rb_seeded' );
+		$has_scf = function_exists( 'update_field' );
+		?>
+		<div class="wrap">
+			<h1>Rad Brothers starter content</h1>
+			<p>Creates or refreshes every page with its sections, copy and placeholder photos, plus the menus and Site settings.</p>
+			<?php if ( $seeded ) : ?>
+				<div class="notice notice-warning inline"><p><strong>Already imported on <?php echo esc_html( wp_date( 'j M Y, H:i', (int) $seeded ) ); ?>.</strong> Importing again replaces the sections on the starter pages and rebuilds the menus, so any edits to those pages will be lost. Site settings you have filled in are kept.</p></div>
+			<?php endif; ?>
+			<?php if ( ! $has_scf ) : ?>
+				<div class="notice notice-error inline"><p>Activate Secure Custom Fields first.</p></div>
+			<?php else : ?>
+				<p><a class="button button-primary button-hero" href="<?php echo esc_url( $url ); ?>" <?php echo $seeded ? 'onclick="return confirm(\'Replace the sections on all starter pages?\');"' : ''; ?>><?php echo $seeded ? 'Re-import starter content' : 'Import starter content'; ?></a></p>
+			<?php endif; ?>
+		</div>
+		<?php
+	} );
+} );
+
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	WP_CLI::add_command( 'radbrothers seed', function () {
 		rb_seed_demo();
@@ -190,6 +213,27 @@ function rb_seed_demo() {
 		[ 'quote' => 'Placeholder testimonial. They worked around our stand builder perfectly. Deliveries arrived to the minute and the breakdown was spotless.', 'name' => 'Name Surname', 'role' => 'Exhibitions Coordinator', 'organisation' => 'Commercial client' ],
 	];
 
+	$demo_url  = '/contact/?service=portal#quote';
+	$portal_ft = [
+		[ 'icon' => 'calendar', 'title' => 'Book items for every event', 'text' => 'Pick the event, tick the stand, banners and boxes you need, and send. Done in a minute.' ],
+		[ 'icon' => 'warehouse', 'title' => 'See everything we store for you', 'text' => 'A live list of your stands and materials, so you always know what is available.' ],
+		[ 'icon' => 'route', 'title' => 'Track every request', 'text' => 'See what is confirmed, what is out for delivery and what is back in storage.' ],
+		[ 'icon' => 'users', 'title' => 'One place for your whole team', 'text' => 'No more email chains. Everyone sees the same calendar and the same orders.' ],
+	];
+	$portal = function ( $args ) use ( $portal_ft, $demo_url, $b ) {
+		return array_merge( [
+			'acf_fc_layout'   => 'portal',
+			'background'      => 'navy',
+			'mockup_position' => 'right',
+			'eyebrow'         => 'Client portal',
+			'heading'         => 'Book your events online. Track everything in one place.',
+			'intro'           => 'Every Rad Brothers client gets their own login to our client portal. Request items for each event, see your season in a calendar, and know exactly where your stand is.',
+			'features'        => $portal_ft,
+			'buttons'         => [ $b( 'Book a demo', $demo_url ), $b( 'See the portal', '/client-portal/', 'ghost' ) ],
+			'badge'           => 'Included for every client',
+		], $args );
+	};
+
 	$compact_steps = [
 		[ 'icon' => 'truck', 'title' => 'Collect', 'text' => 'From your office or our warehouse.' ],
 		[ 'icon' => 'warehouse', 'title' => 'Store', 'text' => 'Safe and dry between events.' ],
@@ -214,6 +258,7 @@ function rb_seed_demo() {
 				[ 'icon' => 'users', 'text' => 'One family team, start to finish' ],
 				[ 'icon' => 'react', 'text' => 'We react when plans change' ],
 				[ 'icon' => 'education', 'text' => 'Trusted by universities' ],
+				[ 'icon' => 'monitor', 'text' => 'Online client portal' ],
 			],
 		],
 		[
@@ -232,6 +277,7 @@ function rb_seed_demo() {
 			'intro'         => 'Whether you need a stand dropped at the door or the whole event handled, you deal with the same family team every time.',
 			'cards'         => $service_cards,
 		],
+		$portal( [ 'anchor' => 'portal' ] ),
 		[
 			'acf_fc_layout' => 'split',
 			'background'    => 'white',
@@ -345,17 +391,13 @@ function rb_seed_demo() {
 			'heading'       => 'Specialists in education. Trusted by business.',
 			'panels'        => $audiences,
 		],
-		[
-			'acf_fc_layout'  => 'text_image',
-			'background'     => 'light',
-			'image_position' => 'left',
-			'eyebrow'        => 'Client portal',
-			'heading'        => 'Your stand, your stock and your next job, in one place',
-			'content'        => '<p>Every client gets access to our online portal. Check what we are storing for you, see upcoming jobs and keep track of where your stand is, without picking up the phone.</p><ul><li>See everything we hold in storage</li><li>View upcoming and past jobs</li><li>Keep your whole team in the loop</li></ul>',
-			'image'          => $i( 'portal.jpg' ),
-			'badge'          => 'Log in any time',
-			'buttons'        => [ $b( 'Client portal login', '#portal', 'navy' ) ],
-		],
+		$portal( [
+			'background'      => 'light',
+			'anchor'          => 'portal',
+			'mockup_position' => 'left',
+			'heading'         => 'Every service comes with the client portal',
+			'intro'           => 'Whichever service you choose, you get your own login. Request items for each event, see what we are storing, and follow every job from booking to return.',
+		] ),
 		[
 			'acf_fc_layout' => 'cta',
 			'style'         => 'orange',
@@ -401,6 +443,11 @@ function rb_seed_demo() {
 				[ 'icon' => 'truck', 'title' => 'School & college visits', 'text' => 'Smaller careers events in schools? We will drop off and collect, so your team can focus on the students.' ],
 			],
 		],
+		$portal( [
+			'eyebrow' => 'Built for busy seasons',
+			'heading' => 'Book your whole open day season online',
+			'intro'   => 'University teams use our client portal to request their stands and materials for every event: open days, careers fairs, HE fairs and school visits. No forms, no email chains, just pick the event and the items.',
+		] ),
 		[
 			'acf_fc_layout' => 'process',
 			'background'    => 'white',
@@ -434,6 +481,7 @@ function rb_seed_demo() {
 			'items'         => [
 				[ 'question' => 'How far ahead should we book?', 'answer' => 'As early as you know your dates, especially for the busy autumn and spring seasons. We can often help at short notice too, so it is always worth asking.' ],
 				[ 'question' => 'Can you handle several events in the same week?', 'answer' => 'Yes. Many of our clients run multiple events across a season. We plan the whole run together so nothing clashes.' ],
+				[ 'question' => 'How do we book our items for each event?', 'answer' => 'Through the client portal. Log in, pick the event, tick the items you need and send the request. You will see it confirmed in your calendar.' ],
 				[ 'question' => 'Can you store our stand between events?', 'answer' => 'Yes. Most university clients keep their stands with us, which saves space on campus and means we can go straight from storage to the venue.' ],
 				[ 'question' => 'What about campus access and parking?', 'answer' => 'We will work with your estates or events team on access, loading and parking, and we are used to tight campus timings.' ],
 				[ 'question' => 'Do you do smaller school and college visits?', 'answer' => 'Yes. For smaller careers events we often just deliver and collect, so you can set up yourselves.' ],
@@ -500,6 +548,12 @@ function rb_seed_demo() {
 				[ 'icon' => 'warehouse', 'title' => 'Return or store', 'text' => 'Back to you, or stored for the next show.' ],
 			],
 		],
+		$portal( [
+			'background' => 'light',
+			'eyebrow'    => 'Client portal',
+			'heading'    => 'Your show calendar, stock and bookings in one login',
+			'intro'      => 'Exhibiting at several shows a year? Book each one in our client portal, see what we hold for you in storage, and give your whole marketing team the same view.',
+		] ),
 		[
 			'acf_fc_layout' => 'features',
 			'background'    => 'navy',
@@ -510,7 +564,7 @@ function rb_seed_demo() {
 			'items'         => [
 				[ 'icon' => 'phone', 'title' => 'A direct line to the team', 'text' => 'You speak to the people doing the job, not a call centre.' ],
 				[ 'icon' => 'shield', 'title' => 'Handled with care', 'text' => 'Your stand, graphics and kit are packed, moved and stored carefully. Insurance details available on request.' ],
-				[ 'icon' => 'monitor', 'title' => 'Client portal', 'text' => 'See what we are storing for you and what is coming up, any time.' ],
+				[ 'icon' => 'monitor', 'title' => 'Your own client portal', 'text' => 'Book shows, check your stock and track every job online, any time.' ],
 				[ 'icon' => 'route', 'title' => 'Venues across the UK', 'text' => 'From conference centres to exhibition halls, we will get you there.' ],
 			],
 		],
@@ -576,10 +630,10 @@ function rb_seed_demo() {
 			'heading'       => 'What we do for you',
 			'intro'         => 'Use the buttons to see which steps each service level includes.',
 			'steps'         => [
-				[ 'icon' => 'phone', 'title' => 'Enquiry', 'text' => 'You tell us about the event: what, where and when. We ask the right questions so nothing is missed.', 'client' => 'Call, email or fill in the quote form.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
-				[ 'icon' => 'calendar', 'title' => 'Plan', 'text' => 'We agree the plan and price, book venue slots and access, and coordinate with your stand builder if you have one.', 'client' => 'Approve the plan.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
+				[ 'icon' => 'phone', 'title' => 'Enquiry', 'text' => 'You tell us about the event: what, where and when. We ask the right questions so nothing is missed.', 'client' => 'Call, email, fill in the quote form, or (once you are a client) request it in the portal.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
+				[ 'icon' => 'calendar', 'title' => 'Plan', 'text' => 'We agree the plan and price, book venue slots and access, and coordinate with your stand builder if you have one. The job appears in your portal calendar.', 'client' => 'Approve the plan.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
 				[ 'icon' => 'truck', 'title' => 'Collect', 'text' => 'We collect your stand, graphics and materials from you, or pick them up from our warehouse.', 'client' => 'Nothing, unless it is coming from your office.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
-				[ 'icon' => 'warehouse', 'title' => 'Store', 'text' => 'Between events, your kit stays safe and dry in our warehouse, ready to go.', 'client' => 'Nothing.', 'tiers' => [ 'full' ] ],
+				[ 'icon' => 'warehouse', 'title' => 'Store', 'text' => 'Between events, your kit stays safe and dry in our warehouse, ready to go. You can see every item we hold in the portal.', 'client' => 'Nothing.', 'tiers' => [ 'full' ] ],
 				[ 'icon' => 'route', 'title' => 'Transport', 'text' => 'We deliver to the venue in our own vans, timed to your slot, and position everything on your space.', 'client' => 'Nothing.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
 				[ 'icon' => 'tools', 'title' => 'Build', 'text' => 'Our team builds your stand and checks it over, so it is ready before the doors open.', 'client' => 'Arrive and add the finishing touches.', 'tiers' => [ 'full', 'partner' ] ],
 				[ 'icon' => 'users', 'title' => 'Event', 'text' => 'You run your event. We are a phone call away if anything is needed.', 'client' => 'Enjoy the event.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
@@ -587,6 +641,11 @@ function rb_seed_demo() {
 				[ 'icon' => 'react', 'title' => 'Return or store', 'text' => 'Everything goes back to you, or into our warehouse ready for next time.', 'client' => 'Nothing. See you at the next one.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
 			],
 		],
+		$portal( [
+			'eyebrow' => 'After your first event',
+			'heading' => 'Next time, book it in the portal',
+			'intro'   => 'Once you are a client, you do not need to call or email for every event. Log in, pick the event, choose your items and we take it from there.',
+		] ),
 		[
 			'acf_fc_layout' => 'cards',
 			'background'    => 'white',
@@ -596,7 +655,7 @@ function rb_seed_demo() {
 			'cards'         => [
 				[ 'icon' => 'phone', 'title' => 'One point of contact', 'text' => 'The same person looks after your job from enquiry to return, and knows your stand inside out.' ],
 				[ 'icon' => 'pin', 'title' => 'Venue know-how', 'text' => 'We know the halls, the loading bays and the campus back routes, so there are fewer surprises on the day.' ],
-				[ 'icon' => 'monitor', 'title' => 'Updates in the portal', 'text' => 'Check what we are storing for you and what is coming up, without having to chase.' ],
+				[ 'icon' => 'monitor', 'title' => 'Your own client portal', 'text' => 'Book events, check what we are storing and follow every job, without having to chase.', 'link_label' => 'About the portal', 'link_url' => '/client-portal/' ],
 			],
 		],
 		[
@@ -641,7 +700,7 @@ function rb_seed_demo() {
 			'cards'         => [
 				[ 'image' => $i( 'courier.jpg' ), 'title' => 'Courier', 'text' => 'Time-sensitive deliveries handled by our own team, not passed on to a third party.', 'points' => "Same-day and next-day options\nEvent materials, samples and documents\nDirect from door to door" ],
 				[ 'image' => $i( 'removals.jpg' ), 'title' => 'Removals', 'text' => 'Small office and specialist moves, planned and carried out with the same care we give to exhibition stands.', 'points' => "Small office moves\nSpecialist and fragile items\nPacking available" ],
-				[ 'image' => $i( 'storage.jpg' ), 'title' => 'Storage', 'text' => 'Secure, dry storage for stands, display kit and event materials, with delivery whenever you need it.', 'points' => "Short and long term\nDelivery and collection on request\nSee your stock in the client portal" ],
+				[ 'image' => $i( 'storage.jpg' ), 'title' => 'Storage', 'text' => 'Secure, dry storage for stands, display kit and event materials, with delivery whenever you need it.', 'points' => "Short and long term\nDelivery and collection on request\nSee your stock in the client portal", 'link_label' => 'About the portal', 'link_url' => '/client-portal/' ],
 			],
 		],
 		[
@@ -822,6 +881,7 @@ function rb_seed_demo() {
 			'eyebrow'       => 'Contact',
 			'heading'       => "Let's get your next event\n*moving.*",
 			'text'          => 'Tell us about the event and we will come back with a plan and a price. Prefer to talk? Give us a call.',
+			'buttons'       => [ $b( 'Already a client? Log in', '#portal-login', 'ghost' ) ],
 		],
 		[
 			'acf_fc_layout' => 'contact',
@@ -843,6 +903,72 @@ function rb_seed_demo() {
 				[ 'question' => 'What information helps with a quote?', 'answer' => 'The event name and venue, dates, roughly what needs moving, and whether you want us to build it.' ],
 				[ 'question' => 'Can you help at short notice?', 'answer' => 'Often, yes. Give us a call and we will tell you straight away.' ],
 			],
+		],
+	] );
+
+	/* ---------- Client portal ---------- */
+	$portal_page = rb_seed_page( 'client-portal', 'Client Portal', [
+		[
+			'acf_fc_layout' => 'hero',
+			'size'          => 'page',
+			'overlay'       => 60,
+			'image'         => $i( 'hero-services.jpg' ),
+			'eyebrow'       => 'Client portal',
+			'heading'       => "Your events, your stock,\n*one login.*",
+			'text'          => 'Every Rad Brothers client gets their own login. Book items for each event, see your whole season at a glance and know where your stand is, any time.',
+			'buttons'       => [ $b( 'Book a demo', $demo_url ), $b( 'Client login', '#portal-login', 'ghost' ) ],
+		],
+		$portal( [
+			'background' => 'white',
+			'eyebrow'    => 'What you can do',
+			'heading'    => 'Less chasing. More time for your event.',
+			'intro'      => 'The portal is the same system we use to run every job, so what you see is exactly what our team sees.',
+			'buttons'    => [ $b( 'Book a demo', $demo_url ) ],
+		] ),
+		[
+			'acf_fc_layout' => 'process',
+			'background'    => 'light',
+			'style'         => 'compact',
+			'eyebrow'       => 'Booking an event',
+			'heading'       => 'From login to loading bay',
+			'steps'         => [
+				[ 'icon' => 'monitor', 'title' => 'Log in', 'text' => 'Your own secure account.' ],
+				[ 'icon' => 'calendar', 'title' => 'Pick the event', 'text' => 'Every event in one calendar.' ],
+				[ 'icon' => 'box', 'title' => 'Choose items', 'text' => 'Tick what you need from storage.' ],
+				[ 'icon' => 'check', 'title' => 'We confirm', 'text' => 'You see it confirmed in the portal.' ],
+				[ 'icon' => 'truck', 'title' => 'We deliver', 'text' => 'Built and ready, then back to storage.' ],
+			],
+		],
+		[
+			'acf_fc_layout' => 'cards',
+			'background'    => 'white',
+			'columns'       => '3',
+			'eyebrow'       => 'Why clients love it',
+			'heading'       => 'Built for teams with busy calendars',
+			'cards'         => [
+				[ 'icon' => 'education', 'title' => 'For universities', 'text' => 'Request stands for open days, careers fairs and school visits all season long, without a single email chain.' ],
+				[ 'icon' => 'briefcase', 'title' => 'For exhibitors', 'text' => 'Plan a year of trade shows, see what is in storage between them, and keep your marketing team in sync.' ],
+				[ 'icon' => 'react', 'title' => 'Backed by real people', 'text' => 'The portal makes booking easy, but you still have a named contact at Rad Brothers whenever you need one.' ],
+			],
+		],
+		[
+			'acf_fc_layout' => 'faq',
+			'background'    => 'light',
+			'eyebrow'       => 'FAQs',
+			'heading'       => 'About the portal',
+			'items'         => [
+				[ 'question' => 'Who gets access?', 'answer' => 'Every Rad Brothers client. We set up your login when you start working with us. (Placeholder: confirm with Rad Brothers.)' ],
+				[ 'question' => 'Can more than one person on our team log in?', 'answer' => 'Placeholder answer: confirm how many users each client account can have.' ],
+				[ 'question' => 'Can we see past events?', 'answer' => 'Yes. Your logbook keeps current and past orders, so you can look back at what went where.' ],
+				[ 'question' => 'Do we still get a real person?', 'answer' => 'Always. The portal is there to make booking easier, not to replace the team. Call or email whenever you like.' ],
+			],
+		],
+		[
+			'acf_fc_layout' => 'cta',
+			'style'         => 'orange',
+			'heading'       => 'Want to see it for yourself?',
+			'text'          => 'Book a quick walkthrough and we will show you how booking a season of events works.',
+			'buttons'       => [ $b( 'Book a demo', $demo_url ), $b( 'Client login', '#portal-login', 'ghost' ) ],
 		],
 	] );
 
@@ -897,7 +1023,7 @@ function rb_seed_demo() {
 	};
 
 	$make_menu( 'Main menu', 'primary', [
-		[ $page_item( $services, 'Services' ), [ $page_item( $services, 'Exhibition services' ), $page_item( $edu_id, 'Education & careers fairs' ), $page_item( $trade_id, 'Trade shows & corporate' ), $page_item( $other, 'Other services' ) ] ],
+		[ $page_item( $services, 'Services' ), [ $page_item( $services, 'Exhibition services' ), $page_item( $edu_id, 'Education & careers fairs' ), $page_item( $trade_id, 'Trade shows & corporate' ), $page_item( $portal_page, 'Client portal' ), $page_item( $other, 'Other services' ) ] ],
 		[ $page_item( $how, 'How it works' ) ],
 		[ $page_item( $about, 'About' ) ],
 		[ $page_item( $clients, 'Clients' ) ],
@@ -908,6 +1034,7 @@ function rb_seed_demo() {
 		[ $page_item( $edu_id, 'Education & careers fairs' ) ],
 		[ $page_item( $trade_id, 'Trade shows & corporate' ) ],
 		[ $page_item( $how, 'How it works' ) ],
+		[ $page_item( $portal_page, 'Client portal' ) ],
 		[ $page_item( $other, 'Other services' ) ],
 		[ $page_item( $about, 'About us' ) ],
 		[ $page_item( $clients, 'Clients' ) ],

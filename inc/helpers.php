@@ -131,6 +131,10 @@ function rb_buttons( $buttons, $class = '' ) {
 			continue;
 		}
 		$style = rb( $b, 'style', 'primary' );
+		// "#portal-login" always points at the portal URL from Site settings.
+		if ( '#portal-login' === trim( $b['url'] ) ) {
+			$b['url'] = rb_opt( 'portal_url', '#' );
+		}
 		$html .= sprintf(
 			'<a class="btn btn--%s" href="%s"><span>%s</span>%s</a>',
 			esc_attr( $style ),

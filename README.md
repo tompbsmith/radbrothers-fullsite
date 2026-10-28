@@ -9,11 +9,11 @@ Brochure theme for Rad Brothers Ltd. Every page is built from **Page sections** 
 3. Click **Import starter content** in the notice that appears. This creates all pages, copy, placeholder photos, the three menus and Site settings. (Or run `wp radbrothers seed`.)
 4. Settings → Permalinks → Save (if links 404).
 
-Re-running the import replaces the sections on the starter pages, so only do it before the client starts editing.
+You can also run (or re-run) the import any time from **Appearance → Starter content**. Re-running replaces the sections on the starter pages, so only do it before the client starts editing.
 
 ## Pages created
 
-Home · Exhibition Services (with Education & Careers Fairs and Trade Shows & Corporate as child pages) · How It Works · Other Services · About Us · Clients & Testimonials · Contact · Privacy / Cookies / Terms (placeholder text).
+Home · Exhibition Services (with Education & Careers Fairs and Trade Shows & Corporate as child pages) · Client Portal · How It Works · Other Services · About Us · Clients & Testimonials · Contact · Privacy / Cookies / Terms (placeholder text).
 
 ## Section types
 
@@ -28,6 +28,7 @@ Home · Exhibition Services (with Education & Careers Fairs and Trade Shows & Co
 | Testimonials | Rotating single quote or grid |
 | Meet the team | Group photo with a hotspot per face |
 | Text + image | Story, portal, etc. with optional floating badge |
+| Client portal showcase | Sells the client portal: features, buttons and an animated, anonymised portal dashboard. Upload a demo-account screenshot to replace the illustration. |
 | Comparison table | Delivery Only vs Full Service vs Build Partner |
 | FAQs | Accordion, outputs FAQ schema |
 | Case studies | Challenge / what we did / result |
@@ -56,7 +57,18 @@ The From address must be on a domain verified in Resend (contact@radbrothers.co.
 - Field groups are registered in `inc/fields.php`, so they ship with the theme and don't need syncing.
 - Logos in `assets/img/brand` were extracted from the brand sheet as SVG.
 
+## Client portal links
+
+Set **Client portal URL** in Site settings. Any button whose link is `#portal-login` automatically points there. "Book a demo" buttons link to `/contact/?service=portal`, which pre-selects "Client portal demo" in the quote form.
+
 ## Changelog
+
+### 1.1.0
+- New Client portal showcase section with an animated, anonymised portal dashboard
+- New Client Portal page (in Services menu and footer)
+- Portal promoted on Home, Exhibition Services, Education, Trade Shows, How It Works, Other Services and Contact
+- Quote form: "Client portal demo" option, pre-selected from `?service=portal`
+- Appearance → Starter content page for running or re-running the import
 
 ### 1.0.3
 - Mobile menu: header turns solid white straight away when the menu opens, so the logo and close icon no longer disappear into the dark hero

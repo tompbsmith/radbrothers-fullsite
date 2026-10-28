@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 function rb_form_options() {
 	return [
 		'client_type' => [ 'University', 'School or college', 'Business / exhibitor', 'Other' ],
-		'service'     => [ 'Full Service', 'Delivery Only', 'Build Partner', 'Storage', 'Courier', 'Removals', 'Not sure yet' ],
+		'service'     => [ 'Full Service', 'Delivery Only', 'Build Partner', 'Storage', 'Client portal demo', 'Courier', 'Removals', 'Not sure yet' ],
 	];
 }
 
@@ -121,7 +121,14 @@ function rb_contact_form( $variant = 'full' ) {
 			</fieldset>
 			<div class="field"><label for="rb-service">Service needed</label>
 				<select id="rb-service" name="service">
-					<?php foreach ( $opts['service'] as $o ) : ?><option><?php echo esc_html( $o ); ?></option><?php endforeach; ?>
+					<?php
+					// Pre-select from ?service=portal (or any option name) so "Book a demo" buttons land ready to go.
+					$want = isset( $_GET['service'] ) ? strtolower( sanitize_text_field( wp_unslash( $_GET['service'] ) ) ) : '';
+					foreach ( $opts['service'] as $o ) :
+						$sel = $want && false !== strpos( strtolower( $o ), $want );
+						?>
+						<option<?php echo $sel ? ' selected' : ''; ?>><?php echo esc_html( $o ); ?></option>
+					<?php endforeach; ?>
 				</select>
 			</div>
 			<div class="field"><label for="rb-dates">Event date(s)</label><input id="rb-dates" name="dates" type="text" placeholder="e.g. 14–16 March"></div>

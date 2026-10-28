@@ -229,6 +229,25 @@ function rb_layouts() {
 		  rb_buttons_field( $p ) ]
 	) );
 
+	$p              = 'portal';
+	$L['portal']     = rb_layout( 'portal', 'Client portal showcase', array_merge(
+		[ rb_bg_field( $p, 'navy' ), rb_anchor_field( $p ),
+		  rb_f( $p, 'mockup_position', 'select', [ 'label' => 'Portal screen', 'choices' => [ 'right' => 'Right', 'left' => 'Left' ], 'default_value' => 'right', 'wrapper' => [ 'width' => 33 ] ] ) ],
+		rb_head_fields( $p ),
+		[ rb_f( $p, 'features', 'repeater', [
+			'layout'     => 'table',
+			'max'        => 5,
+			'sub_fields' => [
+				rb_f( $p . '_f', 'icon', 'select', [ 'choices' => $icons ] ),
+				rb_f( $p . '_f', 'title' ),
+				rb_f( $p . '_f', 'text' ),
+			],
+		] ),
+		  rb_buttons_field( $p ),
+		  rb_f( $p, 'badge', 'text', [ 'label' => 'Floating badge text', 'instructions' => 'Optional, e.g. "Free for every client"' ] ),
+		  rb_f( $p, 'screenshot', 'image', [ 'label' => 'Portal screenshot (optional)', 'instructions' => 'Leave empty to use the built-in illustrated dashboard. If you upload a real screenshot, use a demo account: no real customer names or orders.' ] ) ]
+	) );
+
 	$p              = 'comparison';
 	$L['comparison'] = rb_layout( 'comparison', 'Comparison table', array_merge(
 		[ rb_bg_field( $p ), rb_anchor_field( $p ) ],
