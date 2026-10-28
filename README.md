@@ -55,3 +55,13 @@ The From address must be on a domain verified in Resend (contact@radbrothers.co.
 - Scroll animations are in `assets/js/main.js` (IntersectionObserver) and respect "reduce motion".
 - Field groups are registered in `inc/fields.php`, so they ship with the theme and don't need syncing.
 - Logos in `assets/img/brand` were extracted from the brand sheet as SVG.
+
+## Changelog
+
+### 1.0.1
+- Header, hero and mobile menu allow for the WordPress admin bar
+- Comparison table fits on mobile (no sideways scrolling)
+- Page can no longer scroll sideways on phones while sections animate in
+
+### 1.0.0
+- First release

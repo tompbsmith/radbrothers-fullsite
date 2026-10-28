@@ -41,15 +41,9 @@
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-<<<<<<< HEAD
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
-html.js body.admin-bar { scroll-padding-top: calc(var(--header-h) + 48px); }
-body { margin: 0; font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.65; color: var(--ink); background: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-=======
 html { overflow-x: hidden; overflow-x: clip; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
 html.js body.admin-bar { scroll-padding-top: calc(var(--header-h) + 48px); }
 body { margin: 0; font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.65; color: var(--ink); background: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-x: clip; }
->>>>>>> 9da9073681b5bb9d4c51ad30bbd3f27284230205
 img, svg, video { max-width: 100%; height: auto; display: block; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .2em; }
 p { margin: 0 0 1em; }
