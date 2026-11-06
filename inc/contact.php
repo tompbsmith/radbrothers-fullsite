@@ -16,7 +16,7 @@ function rb_form_options() {
 
 /** Services that don't involve a specific event, so the event fields are hidden. */
 function rb_form_no_event_services() {
-	return [ 'Client portal demo', 'Not sure yet' ];
+	return [ 'Storage', 'Client portal demo', 'Courier', 'Removals', 'Not sure yet' ];
 }
 
 add_action( 'admin_post_nopriv_rb_contact', 'rb_handle_contact' );
