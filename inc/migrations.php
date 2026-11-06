@@ -18,6 +18,7 @@ function rb_run_migrations() {
 		'1.1.3-compare-anchor' => 'rb_migrate_compare_anchor',
 		'1.1.4-design-build'   => 'rb_migrate_design_build',
 		'1.1.5-service-steps'  => 'rb_migrate_service_steps',
+		'1.1.6-print-wording'  => 'rb_migrate_print_wording',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -131,7 +132,7 @@ function rb_migrate_design_build() {
 		$count = (int) get_post_meta( $page->ID, $base . '_rows', true );
 		$subs  = [ 'label', 'col_1', 'col_2', 'col_3' ];
 		for ( $r = 0; $r < $count; $r++ ) {
-			if ( in_array( get_post_meta( $page->ID, $base . '_rows_' . $r . '_label', true ), [ 'New stand designed and made', 'New stand designed and printed' ], true ) ) {
+			if ( in_array( get_post_meta( $page->ID, $base . '_rows_' . $r . '_label', true ), [ 'New stand designed and made', 'New stand designed and printed', 'New stand, banners or flags designed and printed' ], true ) ) {
 				break 2;
 			}
 		}
@@ -244,5 +245,24 @@ function rb_migrate_service_steps() {
 			}
 		}
 		clean_post_cache( $post_id );
+	}
+}
+
+/** Design & Build covers banners, flags and other printed display materials, not just stands. */
+function rb_migrate_print_wording() {
+	$any = 'sections\\_%';
+	$map = [
+		[ $any . '\_text', 'Need a new stand? We get it designed and made through a trusted stand-maker partner, then handle all the logistics around it.', 'Need a new stand, banners or flags? We get them designed and printed through a trusted design and print partner, then handle all the logistics around them.' ],
+		[ $any . '\_points', "New stand designed and printed by our partner\nStored, delivered, built and broken down by us\nHappy to work with your own builder too", "Stands, banners and flags designed and printed by our partner\nStored, delivered, built and broken down by us\nHappy to work with your own builder too" ],
+		[ $any . '\_quote', 'Placeholder testimonial. They sorted our new stand from design to build, then got it to the show and back without us lifting a finger.', 'Placeholder testimonial. They sorted our new stand and banners from design to print, then got everything to the show and back without us lifting a finger.' ],
+		[ $any . '\_columns\_%\_subtitle', 'New stand, made for you', 'Designed and printed for you' ],
+		[ $any . '\_rows\_%\_label', 'New stand designed and printed', 'New stand, banners or flags designed and printed' ],
+		[ $any . '\_answer', 'Yes. Our Design & Build service covers both: we can get a new stand designed and made for you, or work alongside your own builder.', 'Yes. Our Design & Build service covers both: we can get your stand, banners or flags designed and printed, or work alongside your own builder.' ],
+		[ $any . '\_steps\_%\_text', 'We agree the plan and price, book venue slots and access, and coordinate with any stand maker involved. The job appears in your portal calendar.', 'We agree the plan and price, book venue slots and access, and coordinate with any printers or stand suppliers involved. The job appears in your portal calendar.' ],
+		[ $any . '\_steps\_%\_text', 'Our stand-making partner designs and prints your new stand and graphics, and we make sure it is ready in good time.', 'Our design and print partner creates your stand, banners, flags or other display materials, and we make sure everything is ready in good time.' ],
+		[ $any . '\_steps\_%\_text', 'We collect your stand, graphics and materials from you or the stand maker, or pick them up from our warehouse.', 'We collect your stand, graphics and materials from you or our print partner, or pick them up from our warehouse.' ],
+	];
+	foreach ( $map as $m ) {
+		rb_migrate_replace_value( $m[0], $m[1], $m[2] );
 	}
 }

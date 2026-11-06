@@ -176,8 +176,8 @@ function rb_seed_demo() {
 		[
 			'icon'       => 'tools',
 			'title'      => 'Design & Build',
-			'text'       => 'Need a new stand? We get it designed and made through a trusted stand-maker partner, then handle all the logistics around it.',
-			'points'     => "New stand designed and printed by our partner\nStored, delivered, built and broken down by us\nHappy to work with your own builder too",
+			'text'       => 'Need a new stand, banners or flags? We get them designed and printed through a trusted design and print partner, then handle all the logistics around them.',
+			'points'     => "Stands, banners and flags designed and printed by our partner\nStored, delivered, built and broken down by us\nHappy to work with your own builder too",
 			'link_label' => 'Compare services',
 			'link_url'   => '/exhibition-services/#compare',
 		],
@@ -210,7 +210,7 @@ function rb_seed_demo() {
 	$biz_quotes = [
 		[ 'quote' => 'Placeholder testimonial. Three shows in five weeks and not a single missed slot. Rad Brothers made our busiest season the calmest.', 'name' => 'Name Surname', 'role' => 'Events Manager', 'organisation' => 'Commercial client' ],
 		[ 'quote' => 'Placeholder testimonial. Having one team responsible from our warehouse to the show floor took a huge weight off our marketing team.', 'name' => 'Name Surname', 'role' => 'Head of Marketing', 'organisation' => 'Commercial client' ],
-		[ 'quote' => 'Placeholder testimonial. They sorted our new stand from design to build, then got it to the show and back without us lifting a finger.', 'name' => 'Name Surname', 'role' => 'Exhibitions Coordinator', 'organisation' => 'Commercial client' ],
+		[ 'quote' => 'Placeholder testimonial. They sorted our new stand and banners from design to print, then got everything to the show and back without us lifting a finger.', 'name' => 'Name Surname', 'role' => 'Exhibitions Coordinator', 'organisation' => 'Commercial client' ],
 	];
 
 	$demo_url  = '/contact/?service=portal#quote';
@@ -370,10 +370,10 @@ function rb_seed_demo() {
 			'columns'       => [
 				[ 'title' => 'Delivery Only', 'subtitle' => 'You set up', 'highlight' => 0 ],
 				[ 'title' => 'Full Service', 'subtitle' => 'We do it all', 'highlight' => 1 ],
-				[ 'title' => 'Design & Build', 'subtitle' => 'New stand, made for you', 'highlight' => 0 ],
+				[ 'title' => 'Design & Build', 'subtitle' => 'Designed and printed for you', 'highlight' => 0 ],
 			],
 			'rows'          => [
-				[ 'label' => 'New stand designed and printed', 'col_1' => 'no', 'col_2' => 'no', 'col_3' => 'yes' ],
+				[ 'label' => 'New stand, banners or flags designed and printed', 'col_1' => 'no', 'col_2' => 'no', 'col_3' => 'yes' ],
 				[ 'label' => 'Collection from you or our warehouse', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
 				[ 'label' => 'Secure storage between events', 'col_1' => 'no', 'col_2' => 'yes', 'col_3' => 'yes' ],
 				[ 'label' => 'Transport to the venue', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
@@ -487,7 +487,7 @@ function rb_seed_demo() {
 				[ 'question' => 'Can you store our stand between events?', 'answer' => 'Yes. Most university clients keep their stands with us, which saves space on campus and means we can go straight from storage to the venue.' ],
 				[ 'question' => 'What about campus access and parking?', 'answer' => 'We will work with your estates or events team on access, loading and parking, and we are used to tight campus timings.' ],
 				[ 'question' => 'Do you do smaller school and college visits?', 'answer' => 'Yes. For smaller careers events we often just deliver and collect, so you can set up yourselves.' ],
-				[ 'question' => 'Can you work with our existing stand supplier?', 'answer' => 'Yes. Our Design & Build service covers both: we can get a new stand designed and made for you, or work alongside your own builder.' ],
+				[ 'question' => 'Can you work with our existing stand supplier?', 'answer' => 'Yes. Our Design & Build service covers both: we can get your stand, banners or flags designed and printed, or work alongside your own builder.' ],
 			],
 		],
 		[
@@ -633,9 +633,9 @@ function rb_seed_demo() {
 			'intro'         => 'Use the buttons to see which steps each service level includes.',
 			'steps'         => [
 				[ 'icon' => 'phone', 'title' => 'Enquiry', 'text' => 'You tell us about the event: what, where and when. We ask the right questions so nothing is missed.', 'client' => 'Call, email, fill in the quote form, or (once you are a client) request it in the portal.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
-				[ 'icon' => 'calendar', 'title' => 'Plan', 'text' => 'We agree the plan and price, book venue slots and access, and coordinate with any stand maker involved. The job appears in your portal calendar.', 'client' => 'Approve the plan.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
-				[ 'icon' => 'design', 'title' => 'Design & print', 'text' => 'Our stand-making partner designs and prints your new stand and graphics, and we make sure it is ready in good time.', 'client' => 'Share your brief and sign off the design.', 'tiers' => [ 'partner' ] ],
-				[ 'icon' => 'truck', 'title' => 'Collect', 'text' => 'We collect your stand, graphics and materials from you or the stand maker, or pick them up from our warehouse.', 'client' => 'Nothing, unless it is coming from your office.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
+				[ 'icon' => 'calendar', 'title' => 'Plan', 'text' => 'We agree the plan and price, book venue slots and access, and coordinate with any printers or stand suppliers involved. The job appears in your portal calendar.', 'client' => 'Approve the plan.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
+				[ 'icon' => 'design', 'title' => 'Design & print', 'text' => 'Our design and print partner creates your stand, banners, flags or other display materials, and we make sure everything is ready in good time.', 'client' => 'Share your brief and sign off the design.', 'tiers' => [ 'partner' ] ],
+				[ 'icon' => 'truck', 'title' => 'Collect', 'text' => 'We collect your stand, graphics and materials from you or our print partner, or pick them up from our warehouse.', 'client' => 'Nothing, unless it is coming from your office.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
 				[ 'icon' => 'warehouse', 'title' => 'Store', 'text' => 'Between events, your kit stays safe and dry in our warehouse, ready to go. You can see every item we hold in the portal.', 'client' => 'Nothing.', 'tiers' => [ 'full', 'partner' ] ],
 				[ 'icon' => 'route', 'title' => 'Transport', 'text' => 'We deliver to the venue in our own vans, timed to your slot, and position everything on your space.', 'client' => 'Nothing.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
 				[ 'icon' => 'tools', 'title' => 'Build', 'text' => 'Our team builds your stand and checks it over, so it is ready before the doors open.', 'client' => 'Arrive and add the finishing touches.', 'tiers' => [ 'full', 'partner' ] ],
