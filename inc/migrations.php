@@ -22,6 +22,7 @@ function rb_run_migrations() {
 		'1.1.7-two-levels'     => 'rb_migrate_two_levels',
 		'1.1.8-dashed-extra'   => 'rb_migrate_dashed_extra',
 		'1.1.11-delivery-store' => 'rb_migrate_delivery_store',
+		'1.1.12-storage-card'   => 'rb_migrate_storage_card',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -438,6 +439,34 @@ function rb_migrate_delivery_store() {
 				$tiers = get_post_meta( $post_id, $key, true );
 				if ( 'Store' === get_post_meta( $post_id, $base . '_' . $r . '_title', true ) && [ 'full' ] === $tiers ) {
 					update_post_meta( $post_id, $key, [ 'delivery', 'full' ] );
+				}
+			}
+		}
+		clean_post_cache( $post_id );
+	}
+}
+
+/** Storage card on Other Services: drop the portal bullet and the "About the portal" link. */
+function rb_migrate_storage_card() {
+	foreach ( rb_migrate_posts_with_layout( 'cards' ) as $post_id ) {
+		$layouts = get_post_meta( $post_id, 'sections', true );
+		foreach ( (array) $layouts as $i => $layout ) {
+			if ( 'cards' !== $layout ) {
+				continue;
+			}
+			$base  = 'sections_' . $i . '_cards';
+			$count = (int) get_post_meta( $post_id, $base, true );
+			for ( $r = 0; $r < $count; $r++ ) {
+				$k = $base . '_' . $r . '_';
+				if ( 'Storage' !== get_post_meta( $post_id, $k . 'title', true ) ) {
+					continue;
+				}
+				if ( "Short and long term\nDelivery and collection on request\nSee your stock in the client portal" === get_post_meta( $post_id, $k . 'points', true ) ) {
+					update_post_meta( $post_id, $k . 'points', "Short and long term\nDelivery and collection on request" );
+				}
+				if ( 'About the portal' === get_post_meta( $post_id, $k . 'link_label', true ) ) {
+					update_post_meta( $post_id, $k . 'link_label', '' );
+					update_post_meta( $post_id, $k . 'link_url', '' );
 				}
 			}
 		}

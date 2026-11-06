@@ -703,7 +703,7 @@ function rb_seed_demo() {
 			'cards'         => [
 				[ 'image' => $i( 'courier.jpg' ), 'title' => 'Courier', 'text' => 'Time-sensitive deliveries handled by our own team, not passed on to a third party.', 'points' => "Same-day and next-day options\nEvent materials, samples and documents\nDirect from door to door" ],
 				[ 'image' => $i( 'removals.jpg' ), 'title' => 'Removals', 'text' => 'Small office and specialist moves, planned and carried out with the same care we give to exhibition stands.', 'points' => "Small office moves\nSpecialist and fragile items\nPacking available" ],
-				[ 'image' => $i( 'storage.jpg' ), 'title' => 'Storage', 'text' => 'Secure, dry storage for stands, display kit and event materials, with delivery whenever you need it.', 'points' => "Short and long term\nDelivery and collection on request\nSee your stock in the client portal", 'link_label' => 'About the portal', 'link_url' => '/client-portal/' ],
+				[ 'image' => $i( 'storage.jpg' ), 'title' => 'Storage', 'text' => 'Secure, dry storage for stands, display kit and event materials, with delivery whenever you need it.', 'points' => "Short and long term\nDelivery and collection on request" ],
 			],
 		],
 		[
