@@ -21,6 +21,7 @@ function rb_run_migrations() {
 		'1.1.6-print-wording'  => 'rb_migrate_print_wording',
 		'1.1.7-two-levels'     => 'rb_migrate_two_levels',
 		'1.1.8-dashed-extra'   => 'rb_migrate_dashed_extra',
+		'1.1.11-delivery-store' => 'rb_migrate_delivery_store',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -415,6 +416,28 @@ function rb_migrate_dashed_extra() {
 				if ( 'Design & Print' === get_post_meta( $post_id, $base . '_' . $r . '_title', true ) && '' === (string) get_post_meta( $post_id, $k, true ) ) {
 					update_post_meta( $post_id, $k, 1 );
 					update_post_meta( $post_id, '_' . $k, 'field_rb_cards_c_dashed' );
+				}
+			}
+		}
+		clean_post_cache( $post_id );
+	}
+}
+
+/** Delivery Only includes the Store step on process timelines. */
+function rb_migrate_delivery_store() {
+	foreach ( rb_migrate_posts_with_layout( 'process' ) as $post_id ) {
+		$layouts = get_post_meta( $post_id, 'sections', true );
+		foreach ( (array) $layouts as $i => $layout ) {
+			if ( 'process' !== $layout ) {
+				continue;
+			}
+			$base  = 'sections_' . $i . '_steps';
+			$count = (int) get_post_meta( $post_id, $base, true );
+			for ( $r = 0; $r < $count; $r++ ) {
+				$key   = $base . '_' . $r . '_tiers';
+				$tiers = get_post_meta( $post_id, $key, true );
+				if ( 'Store' === get_post_meta( $post_id, $base . '_' . $r . '_title', true ) && [ 'full' ] === $tiers ) {
+					update_post_meta( $post_id, $key, [ 'delivery', 'full' ] );
 				}
 			}
 		}
