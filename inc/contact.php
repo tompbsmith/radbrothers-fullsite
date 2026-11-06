@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 function rb_form_options() {
 	return [
 		'client_type' => [ 'University', 'School or college', 'Business / exhibitor', 'Other' ],
-		'service'     => [ 'Full Service', 'Delivery Only', 'Build Partner', 'Storage', 'Client portal demo', 'Courier', 'Removals', 'Not sure yet' ],
+		'service'     => [ 'Full Service', 'Delivery Only', 'Design & Build', 'Storage', 'Client portal demo', 'Courier', 'Removals', 'Not sure yet' ],
 	];
 }
 

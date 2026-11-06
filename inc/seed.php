@@ -175,9 +175,9 @@ function rb_seed_demo() {
 		],
 		[
 			'icon'       => 'tools',
-			'title'      => 'Build Partner',
-			'text'       => 'Already working with a stand designer or builder? We handle all the logistics around them so the build runs on time.',
-			'points'     => "Logistics planned around your builder\nDeliveries timed to the build slot\nOne contact for moving everything",
+			'title'      => 'Design & Build',
+			'text'       => 'Need a new stand? We get it designed and made through a trusted stand-maker partner, then handle all the logistics around it.',
+			'points'     => "Stand designed and made by our partner\nDelivered, built and broken down by us\nHappy to work with your own builder too",
 			'link_label' => 'Compare services',
 			'link_url'   => '/exhibition-services/#compare',
 		],
@@ -210,7 +210,7 @@ function rb_seed_demo() {
 	$biz_quotes = [
 		[ 'quote' => 'Placeholder testimonial. Three shows in five weeks and not a single missed slot. Rad Brothers made our busiest season the calmest.', 'name' => 'Name Surname', 'role' => 'Events Manager', 'organisation' => 'Commercial client' ],
 		[ 'quote' => 'Placeholder testimonial. Having one team responsible from our warehouse to the show floor took a huge weight off our marketing team.', 'name' => 'Name Surname', 'role' => 'Head of Marketing', 'organisation' => 'Commercial client' ],
-		[ 'quote' => 'Placeholder testimonial. They worked around our stand builder perfectly. Deliveries arrived to the minute and the breakdown was spotless.', 'name' => 'Name Surname', 'role' => 'Exhibitions Coordinator', 'organisation' => 'Commercial client' ],
+		[ 'quote' => 'Placeholder testimonial. They sorted our new stand from design to build, then got it to the show and back without us lifting a finger.', 'name' => 'Name Surname', 'role' => 'Exhibitions Coordinator', 'organisation' => 'Commercial client' ],
 	];
 
 	$demo_url  = '/contact/?service=portal#quote';
@@ -370,15 +370,16 @@ function rb_seed_demo() {
 			'columns'       => [
 				[ 'title' => 'Delivery Only', 'subtitle' => 'You set up', 'highlight' => 0 ],
 				[ 'title' => 'Full Service', 'subtitle' => 'We do it all', 'highlight' => 1 ],
-				[ 'title' => 'Build Partner', 'subtitle' => 'With your builder', 'highlight' => 0 ],
+				[ 'title' => 'Design & Build', 'subtitle' => 'New stand, made for you', 'highlight' => 0 ],
 			],
 			'rows'          => [
+				[ 'label' => 'New stand designed and made', 'col_1' => 'no', 'col_2' => 'no', 'col_3' => 'yes' ],
 				[ 'label' => 'Collection from you or our warehouse', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
 				[ 'label' => 'Secure storage between events', 'col_1' => 'Add-on', 'col_2' => 'yes', 'col_3' => 'Add-on' ],
 				[ 'label' => 'Transport to the venue', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
 				[ 'label' => 'Venue booking-in and access slots', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
-				[ 'label' => 'Stand built on site', 'col_1' => 'no', 'col_2' => 'yes', 'col_3' => 'Your builder' ],
-				[ 'label' => 'Breakdown after the event', 'col_1' => 'no', 'col_2' => 'yes', 'col_3' => 'With your builder' ],
+				[ 'label' => 'Stand built on site', 'col_1' => 'no', 'col_2' => 'yes', 'col_3' => 'yes' ],
+				[ 'label' => 'Breakdown after the event', 'col_1' => 'no', 'col_2' => 'yes', 'col_3' => 'yes' ],
 				[ 'label' => 'Return home or back into storage', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
 				[ 'label' => 'Named contact from enquiry to return', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
 				[ 'label' => 'Job updates in the client portal', 'col_1' => 'yes', 'col_2' => 'yes', 'col_3' => 'yes' ],
@@ -486,7 +487,7 @@ function rb_seed_demo() {
 				[ 'question' => 'Can you store our stand between events?', 'answer' => 'Yes. Most university clients keep their stands with us, which saves space on campus and means we can go straight from storage to the venue.' ],
 				[ 'question' => 'What about campus access and parking?', 'answer' => 'We will work with your estates or events team on access, loading and parking, and we are used to tight campus timings.' ],
 				[ 'question' => 'Do you do smaller school and college visits?', 'answer' => 'Yes. For smaller careers events we often just deliver and collect, so you can set up yourselves.' ],
-				[ 'question' => 'Can you work with our existing stand supplier?', 'answer' => 'Absolutely. Our Build Partner service is designed for exactly that.' ],
+				[ 'question' => 'Can you work with our existing stand supplier?', 'answer' => 'Yes. Our Design & Build service covers both: we can get a new stand designed and made for you, or work alongside your own builder.' ],
 			],
 		],
 		[
@@ -632,7 +633,7 @@ function rb_seed_demo() {
 			'intro'         => 'Use the buttons to see which steps each service level includes.',
 			'steps'         => [
 				[ 'icon' => 'phone', 'title' => 'Enquiry', 'text' => 'You tell us about the event: what, where and when. We ask the right questions so nothing is missed.', 'client' => 'Call, email, fill in the quote form, or (once you are a client) request it in the portal.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
-				[ 'icon' => 'calendar', 'title' => 'Plan', 'text' => 'We agree the plan and price, book venue slots and access, and coordinate with your stand builder if you have one. The job appears in your portal calendar.', 'client' => 'Approve the plan.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
+				[ 'icon' => 'calendar', 'title' => 'Plan', 'text' => 'We agree the plan and price, book venue slots and access, and coordinate with any stand maker involved. The job appears in your portal calendar.', 'client' => 'Approve the plan.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
 				[ 'icon' => 'truck', 'title' => 'Collect', 'text' => 'We collect your stand, graphics and materials from you, or pick them up from our warehouse.', 'client' => 'Nothing, unless it is coming from your office.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],
 				[ 'icon' => 'warehouse', 'title' => 'Store', 'text' => 'Between events, your kit stays safe and dry in our warehouse, ready to go. You can see every item we hold in the portal.', 'client' => 'Nothing.', 'tiers' => [ 'full' ] ],
 				[ 'icon' => 'route', 'title' => 'Transport', 'text' => 'We deliver to the venue in our own vans, timed to your slot, and position everything on your space.', 'client' => 'Nothing.', 'tiers' => [ 'delivery', 'full', 'partner' ] ],

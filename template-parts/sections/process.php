@@ -3,7 +3,7 @@
 $style      = rb( $s, 'style', 'compact' );
 $steps      = rb( $s, 'steps', [] );
 $show_tiers = ! empty( $s['show_tiers'] );
-$tier_names = [ 'delivery' => 'Delivery Only', 'full' => 'Full Service', 'partner' => 'Build Partner' ];
+$tier_names = [ 'delivery' => 'Delivery Only', 'full' => 'Full Service', 'partner' => 'Design & Build' ];
 rb_section_open( $s, 'process--' . $style, 'light' );
 ?>
 <div class="container process-layout">

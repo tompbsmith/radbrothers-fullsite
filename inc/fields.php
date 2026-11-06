@@ -158,7 +158,7 @@ function rb_layouts() {
 				rb_f( $p . '_s', 'client', 'text', [ 'label' => 'What you do', 'instructions' => 'Detailed timeline only' ] ),
 				rb_f( $p . '_s', 'tiers', 'checkbox', [
 					'label'   => 'Included in',
-					'choices' => [ 'delivery' => 'Delivery Only', 'full' => 'Full Service', 'partner' => 'Build Partner' ],
+					'choices' => [ 'delivery' => 'Delivery Only', 'full' => 'Full Service', 'partner' => 'Design & Build' ],
 					'layout'  => 'horizontal',
 				] ),
 			],
