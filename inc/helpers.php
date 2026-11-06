@@ -87,9 +87,13 @@ function rb_icon_choices() {
 	return $out;
 }
 
-/** The brand arrow mark, inline, so it can take currentColor. */
-function rb_arrow_mark( $class = '' ) {
-	return '<svg class="arrow-mark ' . esc_attr( $class ) . '" viewBox="0 0 158.83 146.87" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M 43.23 100.69 L 47.73 86.96 L 52.23 73.24 L 47.70 59.81 L 43.15 46.38 L 43.14 46.28 L 43.13 46.18 L 58.74 46.18 L 102.09 73.24 L 58.74 100.69 Z M 42.04 0.00 L 0.00 0.00 L 0.02 0.27 L 0.04 0.55 L 12.28 36.74 L 24.51 72.92 L 0.25 146.86 L 42.04 146.86 L 158.82 72.92 Z M 42.04 0.00"/></svg>';
+/**
+ * The brand arrow mark, inline, so it can take currentColor.
+ * $simple squares off the back of the inner cut-out so it stays clean at small sizes (buttons).
+ */
+function rb_arrow_mark( $class = '', $simple = false ) {
+	$inner = $simple ? 'M 47.70 46.18 L 58.74 46.18 L 102.09 73.24 L 58.74 100.69 L 47.70 100.69 Z ' : 'M 43.23 100.69 L 47.73 86.96 L 52.23 73.24 L 47.70 59.81 L 43.15 46.38 L 43.14 46.28 L 43.13 46.18 L 58.74 46.18 L 102.09 73.24 L 58.74 100.69 Z ';
+	return '<svg class="arrow-mark ' . esc_attr( $class ) . '" viewBox="0 0 158.83 146.87" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="' . $inner . 'M 42.04 0.00 L 0.00 0.00 L 0.02 0.27 L 0.04 0.55 L 12.28 36.74 L 24.51 72.92 L 0.25 146.86 L 42.04 146.86 L 158.82 72.92 Z M 42.04 0.00"/></svg>';
 }
 
 /** Logo image (brand SVG). $variant: longform | condensed ; $tone: '' | white */
@@ -142,7 +146,7 @@ function rb_image_url( $img, $size = 'large' ) {
 /** Buttons repeater output. */
 /** The Rad Brothers arrow mark, sized for a button. */
 function rb_btn_mark() {
-	return rb_arrow_mark( 'btn__icon btn__mark' );
+	return rb_arrow_mark( 'btn__icon btn__mark', true );
 }
 
 function rb_buttons( $buttons, $class = '' ) {
