@@ -2,6 +2,7 @@
 /** @var array $s */
 $cols = rb( $s, 'columns', [] );
 $rows = rb( $s, 'rows', [] );
+$n    = max( 1, min( 3, count( $cols ) ) );
 
 $cell = function ( $v ) {
 	$v = trim( (string) $v );
@@ -19,13 +20,13 @@ rb_section_open( $s );
 <div class="container">
 	<?php rb_section_head( $s, 'section-head--center' ); ?>
 	<div class="cmp-wrap reveal" style="--d:2">
-		<table class="cmp">
+		<table class="cmp cmp--<?php echo (int) $n; ?>" style="--cmp-cols:<?php echo (int) $n; ?>">
 			<thead>
 				<tr>
 					<th scope="col"><span class="screen-reader-text">What's included</span></th>
 					<?php foreach ( $cols as $c ) : ?>
 						<th scope="col" class="<?php echo ! empty( $c['highlight'] ) ? 'is-highlight' : ''; ?>">
-							<?php if ( ! empty( $c['highlight'] ) ) : ?><span class="cmp__flag">Most popular</span><?php endif; ?>
+							<?php if ( rb( $c, 'flag' ) ) : ?><span class="cmp__flag"><?php echo esc_html( $c['flag'] ); ?></span><?php endif; ?>
 							<strong><?php echo esc_html( rb( $c, 'title' ) ); ?></strong>
 							<span><?php echo esc_html( rb( $c, 'subtitle' ) ); ?></span>
 						</th>
@@ -36,7 +37,7 @@ rb_section_open( $s );
 				<?php foreach ( $rows as $r ) : ?>
 					<tr>
 						<th scope="row"><?php echo esc_html( rb( $r, 'label' ) ); ?></th>
-						<?php for ( $i = 1; $i <= 3; $i++ ) : ?>
+						<?php for ( $i = 1; $i <= $n; $i++ ) : ?>
 							<td class="<?php echo ! empty( $cols[ $i - 1 ]['highlight'] ) ? 'is-highlight' : ''; ?>" data-label="<?php echo esc_attr( rb( $cols[ $i - 1 ] ?? [], 'title' ) ); ?>"><?php echo $cell( $r[ 'col_' . $i ] ?? '' ); ?></td>
 						<?php endfor; ?>
 					</tr>

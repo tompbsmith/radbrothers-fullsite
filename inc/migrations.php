@@ -19,6 +19,7 @@ function rb_run_migrations() {
 		'1.1.4-design-build'   => 'rb_migrate_design_build',
 		'1.1.5-service-steps'  => 'rb_migrate_service_steps',
 		'1.1.6-print-wording'  => 'rb_migrate_print_wording',
+		'1.1.7-two-levels'     => 'rb_migrate_two_levels',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -264,5 +265,136 @@ function rb_migrate_print_wording() {
 	];
 	foreach ( $map as $m ) {
 		rb_migrate_replace_value( $m[0], $m[1], $m[2] );
+	}
+}
+
+/** Remove a row from a repeater inside a flexible content section, shifting later rows up. */
+function rb_migrate_remove_row( $post_id, $base, $index, $subs ) {
+	$count = (int) get_post_meta( $post_id, $base, true );
+	for ( $r = $index; $r < $count - 1; $r++ ) {
+		foreach ( $subs as $sub ) {
+			update_post_meta( $post_id, $base . '_' . $r . '_' . $sub, get_post_meta( $post_id, $base . '_' . ( $r + 1 ) . '_' . $sub, true ) );
+		}
+	}
+	foreach ( $subs as $sub ) {
+		delete_post_meta( $post_id, $base . '_' . ( $count - 1 ) . '_' . $sub );
+		delete_post_meta( $post_id, '_' . $base . '_' . ( $count - 1 ) . '_' . $sub );
+	}
+	update_post_meta( $post_id, $base, max( 0, $count - 1 ) );
+}
+
+/** IDs of posts that have a given flexible content layout. */
+function rb_migrate_posts_with_layout( $layout ) {
+	global $wpdb;
+	$ids = $wpdb->get_col( $wpdb->prepare(
+		"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'sections' AND meta_value LIKE %s",
+		'%' . $wpdb->esc_like( '"' . $layout . '"' ) . '%'
+	) );
+	return array_map( 'intval', $ids );
+}
+
+/**
+ * Two service levels (Delivery Only, Full Service) plus Design & Print as an
+ * optional extra for either, replacing the Design & Build third level.
+ */
+function rb_migrate_two_levels() {
+	$any = 'sections\_%';
+	$map = [
+		[ $any . '\_heading', 'Three ways to work with us', 'How we can help' ],
+		[ $any . '\_text', 'Three service levels, one family team. Pick the one that fits your event, or tell us what you need and we will recommend it.', 'Two service levels, one family team, plus design and print when you need it. Pick the one that fits your event, or tell us what you need and we will recommend it.' ],
+		[ $any . '\_answer', 'Yes. Our Design & Build service covers both: we can get your stand, banners or flags designed and printed, or work alongside your own builder.', 'Yes. We will work alongside your existing supplier on either service, or our Design & Print partner can create new stands, banners or flags for you.' ],
+		[ $any . '\_cards\_%\_tag', 'Most popular', '' ],
+	];
+	foreach ( $map as $m ) {
+		rb_migrate_replace_value( $m[0], $m[1], $m[2] );
+	}
+
+	// Cards: Design & Build becomes the Design & Print extra.
+	foreach ( rb_migrate_posts_with_layout( 'cards' ) as $post_id ) {
+		$layouts = get_post_meta( $post_id, 'sections', true );
+		foreach ( (array) $layouts as $i => $layout ) {
+			if ( 'cards' !== $layout ) {
+				continue;
+			}
+			$base  = 'sections_' . $i . '_cards';
+			$count = (int) get_post_meta( $post_id, $base, true );
+			for ( $r = 0; $r < $count; $r++ ) {
+				$k = $base . '_' . $r . '_';
+				if ( 'Design & Build' !== get_post_meta( $post_id, $k . 'title', true ) ) {
+					continue;
+				}
+				$vals = [
+					'title'  => 'Design & Print',
+					'tag'    => 'Add to either service',
+					'text'   => 'Need a new stand, banners or flags? We get them designed and printed through a trusted partner, ready to go out with the rest of your kit.',
+					'points' => "Stands, banners and flags designed and printed\nWorks with Delivery Only or Full Service\nOne contact from artwork to event day",
+				];
+				if ( 'tools' === get_post_meta( $post_id, $k . 'icon', true ) ) {
+					$vals['icon'] = 'design';
+				}
+				foreach ( $vals as $sub => $v ) {
+					update_post_meta( $post_id, $k . $sub, $v );
+					update_post_meta( $post_id, '_' . $k . $sub, 'field_rb_cards_c_' . $sub );
+				}
+			}
+		}
+		clean_post_cache( $post_id );
+	}
+
+	// Comparison: drop the third column and move design and print to an optional-extra row.
+	foreach ( rb_migrate_posts_with_layout( 'comparison' ) as $post_id ) {
+		$layouts = get_post_meta( $post_id, 'sections', true );
+		foreach ( (array) $layouts as $i => $layout ) {
+			if ( 'comparison' !== $layout ) {
+				continue;
+			}
+			$base = 'sections_' . $i;
+			if ( 'Design & Build' !== get_post_meta( $post_id, $base . '_columns_2_title', true ) ) {
+				continue;
+			}
+			rb_migrate_remove_row( $post_id, $base . '_columns', 2, [ 'title', 'subtitle', 'highlight' ] );
+
+			$rows  = $base . '_rows';
+			$count = (int) get_post_meta( $post_id, $rows, true );
+			for ( $r = 0; $r < $count; $r++ ) {
+				if ( 'New stand, banners or flags designed and printed' === get_post_meta( $post_id, $rows . '_' . $r . '_label', true ) ) {
+					rb_migrate_remove_row( $post_id, $rows, $r, [ 'label', 'col_1', 'col_2', 'col_3' ] );
+					rb_migrate_insert_row( $post_id, $rows, $count - 1, [
+						'label' => 'Stands, banners or flags designed and printed',
+						'col_1' => 'Optional extra',
+						'col_2' => 'Optional extra',
+						'col_3' => '',
+					], 'field_rb_comparison_r_' );
+					break;
+				}
+			}
+		}
+		clean_post_cache( $post_id );
+	}
+
+	// Process timelines: Design & print becomes an optional extra; drop the old third level.
+	foreach ( rb_migrate_posts_with_layout( 'process' ) as $post_id ) {
+		$layouts = get_post_meta( $post_id, 'sections', true );
+		foreach ( (array) $layouts as $i => $layout ) {
+			if ( 'process' !== $layout ) {
+				continue;
+			}
+			$base  = 'sections_' . $i . '_steps';
+			$count = (int) get_post_meta( $post_id, $base, true );
+			for ( $r = 0; $r < $count; $r++ ) {
+				$key   = $base . '_' . $r . '_tiers';
+				$tiers = get_post_meta( $post_id, $key, true );
+				if ( ! is_array( $tiers ) || ! in_array( 'partner', $tiers, true ) ) {
+					continue;
+				}
+				if ( 'Design & print' === get_post_meta( $post_id, $base . '_' . $r . '_title', true ) ) {
+					$tiers = [ 'extra' ];
+				} else {
+					$tiers = array_values( array_diff( $tiers, [ 'partner' ] ) );
+				}
+				update_post_meta( $post_id, $key, $tiers );
+			}
+		}
+		clean_post_cache( $post_id );
 	}
 }

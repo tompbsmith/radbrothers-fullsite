@@ -3,7 +3,8 @@
 $style      = rb( $s, 'style', 'compact' );
 $steps      = rb( $s, 'steps', [] );
 $show_tiers = ! empty( $s['show_tiers'] );
-$tier_names = [ 'delivery' => 'Delivery Only', 'full' => 'Full Service', 'partner' => 'Design & Build' ];
+$tier_names = [ 'delivery' => 'Delivery Only', 'full' => 'Full Service' ];
+$extra_name = 'Optional extra';
 rb_section_open( $s, 'process--' . $style, 'light' );
 ?>
 <div class="container process-layout">
@@ -23,9 +24,12 @@ rb_section_open( $s, 'process--' . $style, 'light' );
 
 	<ol class="steps steps--<?php echo esc_attr( $style ); ?>" data-steps>
 		<?php foreach ( $steps as $i => $st ) :
-			$tiers = (array) rb( $st, 'tiers', [] );
+			$tiers    = (array) rb( $st, 'tiers', [] );
+			$is_extra = in_array( 'extra', $tiers, true );
+			// An optional extra can be added to any service level, so it stays visible under every filter.
+			$filter   = $is_extra ? array_keys( $tier_names ) : $tiers;
 			?>
-			<li class="step reveal" style="--d:<?php echo (int) $i; ?>" data-tiers="<?php echo esc_attr( implode( ' ', $tiers ) ); ?>">
+			<li class="step reveal<?php echo $is_extra ? ' step--extra' : ''; ?>" style="--d:<?php echo (int) $i; ?>" data-tiers="<?php echo esc_attr( implode( ' ', $filter ) ); ?>">
 				<div class="step__marker">
 					<span class="step__icon"><?php echo rb_icon( rb( $st, 'icon', 'check' ) ); ?></span>
 					<span class="step__num"><?php echo esc_html( str_pad( $i + 1, 2, '0', STR_PAD_LEFT ) ); ?></span>
@@ -38,7 +42,11 @@ rb_section_open( $s, 'process--' . $style, 'light' );
 					<?php endif; ?>
 					<?php if ( 'detailed' === $style && $show_tiers && $tiers ) : ?>
 						<ul class="step__tiers">
-							<?php foreach ( $tiers as $t ) : ?><li class="tier tier--<?php echo esc_attr( $t ); ?>"><?php echo esc_html( $tier_names[ $t ] ?? $t ); ?></li><?php endforeach; ?>
+							<?php if ( $is_extra ) : ?>
+								<li class="tier tier--extra"><?php echo esc_html( $extra_name ); ?></li>
+							<?php else : ?>
+								<?php foreach ( $tiers as $t ) : if ( ! isset( $tier_names[ $t ] ) ) { continue; } ?><li class="tier tier--<?php echo esc_attr( $t ); ?>"><?php echo esc_html( $tier_names[ $t ] ); ?></li><?php endforeach; ?>
+							<?php endif; ?>
 						</ul>
 					<?php endif; ?>
 				</div>

@@ -360,7 +360,7 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 .tier { padding: 3px 10px; border-radius: 999px; font-size: .78rem; font-family: var(--font-head); font-weight: 500; background: var(--light); color: var(--muted); }
 .tier--full { background: var(--navy); color: #fff; }
 .tier--delivery { background: #e2eef7; color: #1c4e74; }
-.tier--partner { background: var(--orange-soft); color: var(--orange-dark); }
+.tier--extra { background: var(--orange-soft); color: var(--orange-dark); }
 .steps--detailed .step.is-dimmed { opacity: .28; filter: grayscale(1); }
 .tier-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: -16px 0 36px; }
 .tier-filter__label { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }
@@ -509,7 +509,7 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 
 /* ---------- Comparison table ---------- */
 .cmp-wrap { overflow-x: auto; margin: 0 calc(var(--gutter) * -1); padding: 12px var(--gutter) 4px; }
-.cmp { width: 100%; min-width: 680px; border-collapse: separate; border-spacing: 0; }
+.cmp { width: 100%; min-width: 560px; border-collapse: separate; border-spacing: 0; }
 .cmp th, .cmp td { padding: 16px 18px; text-align: center; border-bottom: 1px solid var(--line); }
 .cmp tbody th { text-align: left; font-family: var(--font-body); font-weight: 500; }
 .cmp thead th { vertical-align: bottom; padding-top: 24px; position: relative; }
@@ -532,7 +532,7 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 @media (max-width: 720px) {
 	.cmp-wrap { overflow: visible; margin: 0; padding: 12px 0 0; }
 	.cmp, .cmp thead, .cmp tbody, .cmp tr { display: block; min-width: 0; width: 100%; }
-	.cmp thead tr, .cmp tbody tr { display: grid; grid-template-columns: repeat(3, 1fr); }
+	.cmp thead tr, .cmp tbody tr { display: grid; grid-template-columns: repeat(var(--cmp-cols, 3), 1fr); }
 	.cmp thead th:first-child { display: none; }
 	.cmp th, .cmp td { padding: 10px 6px; }
 	.cmp thead th { padding: 22px 6px 12px; }

@@ -158,7 +158,7 @@ function rb_layouts() {
 				rb_f( $p . '_s', 'client', 'text', [ 'label' => 'What you do', 'instructions' => 'Detailed timeline only' ] ),
 				rb_f( $p . '_s', 'tiers', 'checkbox', [
 					'label'   => 'Included in',
-					'choices' => [ 'delivery' => 'Delivery Only', 'full' => 'Full Service', 'partner' => 'Design & Build' ],
+					'choices' => [ 'delivery' => 'Delivery Only', 'full' => 'Full Service', 'extra' => 'Optional extra (either service)' ],
 					'layout'  => 'horizontal',
 				] ),
 			],
@@ -253,10 +253,10 @@ function rb_layouts() {
 		[ rb_bg_field( $p ), rb_anchor_field( $p ) ],
 		rb_head_fields( $p ),
 		[ rb_f( $p, 'columns', 'repeater', [
-			'min'        => 3,
+			'min'        => 2,
 			'max'        => 3,
 			'layout'     => 'table',
-			'sub_fields' => [ rb_f( $p . '_c', 'title' ), rb_f( $p . '_c', 'subtitle' ), rb_f( $p . '_c', 'highlight', 'true_false', [ 'ui' => 1 ] ) ],
+			'sub_fields' => [ rb_f( $p . '_c', 'title' ), rb_f( $p . '_c', 'subtitle' ), rb_f( $p . '_c', 'highlight', 'true_false', [ 'ui' => 1 ] ), rb_f( $p . '_c', 'flag', 'text', [ 'instructions' => 'Optional label above the column, e.g. "Most popular"' ] ) ],
 		] ),
 		  rb_f( $p, 'rows', 'repeater', [
 			'layout'     => 'table',
@@ -264,7 +264,7 @@ function rb_layouts() {
 				rb_f( $p . '_r', 'label' ),
 				rb_f( $p . '_r', 'col_1', 'text', [ 'label' => 'Column 1', 'instructions' => 'yes, no, or short text' ] ),
 				rb_f( $p . '_r', 'col_2', 'text', [ 'label' => 'Column 2' ] ),
-				rb_f( $p . '_r', 'col_3', 'text', [ 'label' => 'Column 3' ] ),
+				rb_f( $p . '_r', 'col_3', 'text', [ 'label' => 'Column 3', 'instructions' => 'Only used if there are 3 columns' ] ),
 			],
 		] ),
 		  rb_f( $p, 'note', 'text' ) ]
