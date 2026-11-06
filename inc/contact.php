@@ -200,7 +200,7 @@ function rb_contact_form( $variant = 'full' ) {
 	<form class="quote-form quote-form--<?php echo esc_attr( $variant ); ?>" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
 		<input type="hidden" name="action" value="rb_contact">
 		<?php wp_nonce_field( 'rb_contact', 'rb_nonce' ); ?>
-		<p class="field field--full form-required-note">Fields marked <span aria-hidden="true">*</span> are required.</p>
+		<p class="form-required-note">Fields marked <span aria-hidden="true">*</span> are required.</p>
 		<div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
 		<div class="field"><label for="rb-name">Your name <span aria-hidden="true">*</span></label><input id="rb-name" name="name" type="text" autocomplete="name" required value="<?php echo esc_attr( $val( 'name' ) ); ?>"<?php echo $invalid( 'name' ); ?>><?php echo $field_error( 'name', 'Please add your name.' ); ?></div>
 		<div class="field"><label for="rb-org">Organisation</label><input id="rb-org" name="organisation" type="text" autocomplete="organization" value="<?php echo esc_attr( $val( 'organisation' ) ); ?>"></div>
