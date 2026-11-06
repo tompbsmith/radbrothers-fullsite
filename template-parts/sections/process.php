@@ -14,9 +14,12 @@ rb_section_open( $s, 'process--' . $style, 'light' );
 	<?php if ( 'detailed' === $style && $show_tiers ) : ?>
 		<div class="tier-filter reveal" role="group" aria-label="Show steps for a service level">
 			<span class="tier-filter__label">Show me:</span>
-			<button type="button" class="tier-btn is-active" data-tier="all" aria-pressed="true">Everything</button>
-			<?php foreach ( $tier_names as $k => $n ) : ?>
-				<button type="button" class="tier-btn" data-tier="<?php echo esc_attr( $k ); ?>" aria-pressed="false"><?php echo esc_html( $n ); ?></button>
+			<?php
+			// Full Service includes every step, so it's selected to start with (the whole timeline shows).
+			$start = isset( $tier_names['full'] ) ? 'full' : array_key_first( $tier_names );
+			foreach ( $tier_names as $k => $n ) :
+				?>
+				<button type="button" class="tier-btn<?php echo $start === $k ? ' is-active' : ''; ?>" data-tier="<?php echo esc_attr( $k ); ?>" aria-pressed="<?php echo $start === $k ? 'true' : 'false'; ?>"><?php echo esc_html( $n ); ?></button>
 			<?php endforeach; ?>
 		</div>
 	<?php endif; ?>
