@@ -22,7 +22,8 @@ $style = '--overlay:' . ( $overlay / 100 ) . ';--fx:' . $fx . ';--fy:' . $fy
 ?>
 <section class="hero hero--<?php echo esc_attr( $size ); ?>"<?php echo $id ? ' id="' . esc_attr( sanitize_title( $id ) ) . '"' : ''; ?> data-animate style="<?php echo esc_attr( $style ); ?>">
 	<div class="hero__media" data-parallax>
-		<?php echo rb_image( rb_hero_image( rb( $s, 'image' ) ), 'full', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'class' => 'hero__img', 'sizes' => '100vw' ] ); ?>
+		<?php // On tall phone heroes the photo is cropped from a much wider render, so ask for a bigger file than 100vw. ?>
+		<?php echo rb_image( rb_hero_image( rb( $s, 'image' ) ), 'full', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'class' => 'hero__img', 'sizes' => '(max-width: 767px) 290vw, (max-width: 1100px) 180vw, 100vw' ] ); ?>
 	</div>
 	<div class="hero__shade" aria-hidden="true"></div>
 	<div class="hero__mark" aria-hidden="true"><?php echo rb_arrow_mark(); ?></div>
