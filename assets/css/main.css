@@ -792,3 +792,20 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 @media (prefers-reduced-motion: reduce) {
 	.js [data-animate] .pm__stat, .js [data-animate] .pm__card, .js [data-animate] .pm__day em, .js [data-animate] .pm__toast { opacity: 1; transform: none; animation: none; }
 }
+
+/* ---------- Private site holding page ---------- */
+.rb-private { margin: 0; background: var(--navy); }
+.private { position: relative; isolation: isolate; overflow: hidden; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; padding: 40px var(--gutter, 16px); }
+.private__mark { position: absolute; z-index: -1; right: -10vw; bottom: -12vh; width: min(70vw, 760px); color: var(--orange); opacity: .12; pointer-events: none; }
+.private__mark .arrow-mark { width: 100%; }
+.private__box { width: 100%; max-width: 560px; padding: clamp(32px, 6vw, 56px); background: #fff; color: var(--ink); border-radius: calc(var(--radius) + 8px); box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .55); text-align: center; }
+.private__logo { display: block; width: 150px; height: auto; margin: 0 auto 28px; }
+.private__title { font-family: var(--font-head); font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.15; margin: 0 0 14px; }
+.private__text { color: var(--muted); font-size: 1.05rem; margin: 0 auto; max-width: 440px; }
+.private__contact { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 14px; }
+.private__contact a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border: 1.5px solid var(--line); border-radius: 999px; color: var(--ink); font-family: var(--font-head); font-weight: 500; text-decoration: none; transition: border-color .2s, background-color .2s, color .2s; }
+.private__contact a:hover { background: var(--navy); border-color: var(--navy); color: #fff; }
+.private__contact .icon { width: 18px; height: 18px; color: var(--orange-text); }
+.private__contact a:hover .icon { color: #fff; }
+.private__login { margin: 28px 0 0; font-size: .9rem; }
+.private__login a { color: var(--muted); }

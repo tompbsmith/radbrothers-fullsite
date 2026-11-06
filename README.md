@@ -90,3 +90,11 @@ Set **Client portal URL** in Site settings. Any button whose link is `#portal-lo
 
 ### 1.0.0
 - First release
+
+## Private site mode
+
+Site settings → **Private site**. Turn on "Make the site private" and save:
+
+- Visitors who aren't logged in see a branded holding page (heading, message and contact details are editable there). Anyone logged in to WordPress sees the site as normal, and the admin bar shows "Site is private" as a reminder.
+- Saving with the site private creates a **preview link**, shown on the same tab. Anyone who opens it can browse the whole site on that device until the link runs out (24 hours, 7 days, 30 days, or until replaced). "Make a new preview link" replaces it and locks out everyone using the old one.
+- While private, the site is marked noindex and the REST API is closed to logged-out visitors.

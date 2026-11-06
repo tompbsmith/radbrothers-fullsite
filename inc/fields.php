@@ -365,6 +365,15 @@ add_action( 'acf/init', function () {
 		'key'      => 'group_rb_options',
 		'title'    => 'Site settings',
 		'fields'   => [
+			[ 'key' => 'field_rb_opt_tab_private', 'label' => 'Private site', 'type' => 'tab' ],
+			rb_f( $p, 'private_on', 'true_false', [ 'label' => 'Make the site private', 'instructions' => 'Visitors who aren\'t logged in see a branded holding page instead of the site. Anyone logged in to WordPress sees the site as normal.', 'ui' => 1, 'ui_on_text' => 'Private', 'ui_off_text' => 'Public' ] ),
+			rb_f( $p, 'private_heading', 'text', [ 'label' => 'Holding page heading', 'placeholder' => 'Our new website is nearly ready', 'conditional_logic' => [ [ [ 'field' => 'field_rb_opt_private_on', 'operator' => '==', 'value' => '1' ] ] ] ] ),
+			rb_f( $p, 'private_message', 'textarea', [ 'label' => 'Holding page message', 'rows' => 3, 'new_lines' => 'br', 'placeholder' => 'We\'re putting the finishing touches to the new Rad Brothers website. In the meantime, we\'re here as usual.', 'conditional_logic' => [ [ [ 'field' => 'field_rb_opt_private_on', 'operator' => '==', 'value' => '1' ] ] ] ] ),
+			rb_f( $p, 'private_contact', 'true_false', [ 'label' => 'Show phone and email on the holding page', 'ui' => 1, 'default_value' => 1, 'conditional_logic' => [ [ [ 'field' => 'field_rb_opt_private_on', 'operator' => '==', 'value' => '1' ] ] ] ] ),
+			[ 'key' => 'field_rb_opt_preview_info', 'label' => 'Preview link', 'name' => '', 'type' => 'message', 'message' => '', 'new_lines' => '', 'esc_html' => 0, 'conditional_logic' => [ [ [ 'field' => 'field_rb_opt_private_on', 'operator' => '==', 'value' => '1' ] ] ] ],
+			rb_f( $p, 'preview_days', 'select', [ 'label' => 'Preview link lasts for', 'choices' => [ '1' => '24 hours', '7' => '7 days', '30' => '30 days', '0' => 'Until I make a new link' ], 'default_value' => '7', 'wrapper' => [ 'width' => 50 ], 'conditional_logic' => [ [ [ 'field' => 'field_rb_opt_private_on', 'operator' => '==', 'value' => '1' ] ] ] ] ),
+			rb_f( $p, 'preview_new', 'true_false', [ 'label' => 'Make a new preview link', 'instructions' => 'Turn on and save. The old link stops working straight away, including for anyone already using it.', 'ui' => 1, 'wrapper' => [ 'width' => 50 ], 'conditional_logic' => [ [ [ 'field' => 'field_rb_opt_private_on', 'operator' => '==', 'value' => '1' ] ] ] ] ),
+
 			[ 'key' => 'field_rb_opt_tab_contact', 'label' => 'Contact details', 'type' => 'tab' ],
 			rb_f( $p, 'phone', 'text', [ 'wrapper' => [ 'width' => 50 ] ] ),
 			rb_f( $p, 'email', 'email', [ 'wrapper' => [ 'width' => 50 ] ] ),
