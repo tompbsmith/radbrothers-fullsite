@@ -162,7 +162,7 @@ function rb_seed_demo() {
 			'text'       => 'We collect your stand and materials and get them to the venue on time, ready for your team to set up.',
 			'points'     => "Collection from you or our warehouse\nTimed delivery to the venue\nCollection and return after the event",
 			'link_label' => 'Compare services',
-			'link_url'   => '/exhibition-services/#service-levels',
+			'link_url'   => '/exhibition-services/#compare',
 		],
 		[
 			'icon'       => 'box',
@@ -171,7 +171,7 @@ function rb_seed_demo() {
 			'text'       => 'The whole job, start to finish. We collect, store, deliver, build, break down and return, so you just turn up.',
 			'points'     => "Collection, storage and transport\nStand built and ready before doors open\nBreakdown and return, or back into storage",
 			'link_label' => 'Compare services',
-			'link_url'   => '/exhibition-services/#service-levels',
+			'link_url'   => '/exhibition-services/#compare',
 		],
 		[
 			'icon'       => 'tools',
@@ -179,7 +179,7 @@ function rb_seed_demo() {
 			'text'       => 'Already working with a stand designer or builder? We handle all the logistics around them so the build runs on time.',
 			'points'     => "Logistics planned around your builder\nDeliveries timed to the build slot\nOne contact for moving everything",
 			'link_label' => 'Compare services',
-			'link_url'   => '/exhibition-services/#service-levels',
+			'link_url'   => '/exhibition-services/#compare',
 		],
 	];
 
@@ -364,6 +364,7 @@ function rb_seed_demo() {
 		[
 			'acf_fc_layout' => 'comparison',
 			'background'    => 'light',
+			'anchor'        => 'compare',
 			'eyebrow'       => 'Side by side',
 			'heading'       => "What's included",
 			'columns'       => [

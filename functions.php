@@ -9,7 +9,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RB_VERSION', '1.1.2' );
+define( 'RB_VERSION', '1.1.3' );
 define( 'RB_DIR', get_template_directory() );
 define( 'RB_URI', get_template_directory_uri() );
 
@@ -17,6 +17,7 @@ require RB_DIR . '/inc/helpers.php';
 require RB_DIR . '/inc/fields.php';
 require RB_DIR . '/inc/contact.php';
 require RB_DIR . '/inc/seed.php';
+require RB_DIR . '/inc/migrations.php';
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );
