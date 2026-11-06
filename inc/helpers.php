@@ -140,8 +140,12 @@ function rb_image_url( $img, $size = 'large' ) {
 }
 
 /** Buttons repeater output. */
-/** @param bool $mark Use the Rad Brothers arrow mark instead of the plain arrow icon. */
-function rb_buttons( $buttons, $class = '', $mark = false ) {
+/** The Rad Brothers arrow mark, sized for a button. */
+function rb_btn_mark() {
+	return rb_arrow_mark( 'btn__icon btn__mark' );
+}
+
+function rb_buttons( $buttons, $class = '' ) {
 	if ( empty( $buttons ) || ! is_array( $buttons ) ) {
 		return '';
 	}
@@ -164,7 +168,7 @@ function rb_buttons( $buttons, $class = '', $mark = false ) {
 			esc_url( $b['url'] ),
 			$external ? ' target="_blank" rel="noopener"' : '',
 			esc_html( $b['label'] ),
-			$mark ? rb_arrow_mark( 'btn__icon btn__mark' ) : rb_icon( 'arrow', 'btn__icon' )
+			rb_btn_mark()
 		);
 	}
 	return $html . '</div>';

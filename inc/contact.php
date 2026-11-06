@@ -147,7 +147,7 @@ function rb_contact_form( $variant = 'full' ) {
 		<?php endif; ?>
 		<div class="field field--full"><label for="rb-msg">How can we help? <span>*</span></label><textarea id="rb-msg" name="message" rows="<?php echo 'full' === $variant ? 5 : 4; ?>" required></textarea></div>
 		<div class="field field--full form-foot">
-			<button class="btn btn--primary" type="submit"><span>Send enquiry</span><?php echo rb_icon( 'arrow', 'btn__icon' ); ?></button>
+			<button class="btn btn--primary" type="submit"><span>Send enquiry</span><?php echo rb_btn_mark(); ?></button>
 			<p class="form-small"><?php echo esc_html( rb_opt( 'response_time', 'We reply within one working day.' ) ); ?></p>
 		</div>
 	</form>

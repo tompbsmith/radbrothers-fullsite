@@ -7,8 +7,8 @@ get_header();
 		<h1 class="section-title reveal" style="--d:1">This page took a wrong turn.</h1>
 		<p class="section-intro reveal" style="--d:2">The page you were after has moved or never existed. Let's get you back on the road.</p>
 		<div class="buttons reveal" style="--d:3">
-			<a class="btn btn--primary" href="<?php echo esc_url( home_url( '/' ) ); ?>"><span>Back to home</span><?php echo rb_icon( 'arrow', 'btn__icon' ); ?></a>
-			<a class="btn btn--ghost" href="<?php echo esc_url( rb_opt( 'cta_url', home_url( '/contact/' ) ) ); ?>"><span>Contact us</span><?php echo rb_icon( 'arrow', 'btn__icon' ); ?></a>
+			<a class="btn btn--primary" href="<?php echo esc_url( home_url( '/' ) ); ?>"><span>Back to home</span><?php echo rb_btn_mark(); ?></a>
+			<a class="btn btn--ghost" href="<?php echo esc_url( rb_opt( 'cta_url', home_url( '/contact/' ) ) ); ?>"><span>Contact us</span><?php echo rb_btn_mark(); ?></a>
 		</div>
 	</div>
 </section>

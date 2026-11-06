@@ -26,7 +26,7 @@ $linkedin = rb_opt( 'linkedin' );
 				<?php if ( $email ) : ?><li><?php echo rb_icon( 'mail' ); ?><a href="mailto:<?php echo esc_attr( antispambot( $email ) ); ?>"><?php echo esc_html( antispambot( $email ) ); ?></a></li><?php endif; ?>
 				<?php if ( $address ) : ?><li><?php echo rb_icon( 'pin' ); ?><span><?php echo wp_kses( $address, [ 'br' => [] ] ); ?></span></li><?php endif; ?>
 			</ul>
-			<a class="btn btn--primary btn--sm" href="<?php echo esc_url( rb_opt( 'cta_url', home_url( '/contact/' ) ) ); ?>"><span><?php echo esc_html( rb_opt( 'cta_label', 'Get a quote' ) ); ?></span><?php echo rb_icon( 'arrow', 'btn__icon' ); ?></a>
+			<a class="btn btn--primary btn--sm" href="<?php echo esc_url( rb_opt( 'cta_url', home_url( '/contact/' ) ) ); ?>"><span><?php echo esc_html( rb_opt( 'cta_label', 'Get a quote' ) ); ?></span><?php echo rb_btn_mark(); ?></a>
 		</div>
 	</div>
 	<div class="container site-footer__base">
