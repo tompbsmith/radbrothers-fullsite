@@ -233,7 +233,7 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 .js .hero__img { transform: scale(1.1); transition: transform 2.4s var(--ease); }
 .js .hero.in-view .hero__img { transform: scale(1); }
 .hero__shade { position: absolute; inset: 0; z-index: -2; background:
-	linear-gradient(90deg, rgba(10, 28, 44, calc(var(--overlay) + .25)) 0%, rgba(10, 28, 44, var(--overlay)) 45%, rgba(10, 28, 44, calc(var(--overlay) - .3)) 100%),
+	linear-gradient(90deg, rgba(10, 28, 44, calc(var(--overlay) + .3)) 0%, rgba(10, 28, 44, calc(var(--overlay) + .1)) 45%, rgba(10, 28, 44, calc(var(--overlay) - .15)) 100%),
 	linear-gradient(0deg, rgba(10, 28, 44, .75) 0%, rgba(10, 28, 44, 0) 45%),
 	linear-gradient(180deg, rgba(10, 28, 44, .55) 0%, rgba(10, 28, 44, 0) 22%); }
 .hero__mark { position: absolute; z-index: -1; right: -7vw; bottom: -14%; width: min(42vw, 560px); color: var(--orange); opacity: .14; }
@@ -260,7 +260,13 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 }
 @media (max-width: 640px) {
 	.hero__scroll { display: none; }
-	.hero--home { min-height: calc(75svh - var(--wpbar, 0px)); }
+	/* Fit the whole home hero on one phone screen, with the text sitting just under the header. */
+	.hero--home { min-height: calc(100svh - var(--wpbar, 0px)); align-items: flex-start; padding: calc(var(--header-h) + 20px) 0 32px; }
+	.hero--home .hero__text { margin-bottom: 24px; }
+	.hero--home .hero__highlights { margin-top: 24px; gap: 10px 20px; }
+	/* Text runs the full width on phones, so darken the whole photo evenly rather than just the left side. */
+	.hero__shade { background:
+		linear-gradient(180deg, rgba(10, 28, 44, calc(var(--overlay) + .25)) 0%, rgba(10, 28, 44, calc(var(--overlay) + .15)) 55%, rgba(10, 28, 44, calc(var(--overlay) + .3)) 100%); }
 	.buttons--hero .btn { flex: 1 1 auto; justify-content: center; }
 }
 
