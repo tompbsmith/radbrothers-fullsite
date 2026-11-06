@@ -154,10 +154,14 @@ function rb_buttons( $buttons, $class = '' ) {
 		if ( '#portal-login' === trim( $b['url'] ) ) {
 			$b['url'] = rb_opt( 'portal_url', '#' );
 		}
+		// Links to other websites open in a new tab.
+		$host     = wp_parse_url( $b['url'], PHP_URL_HOST );
+		$external = $host && strtolower( $host ) !== strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
 		$html .= sprintf(
-			'<a class="btn btn--%s" href="%s"><span>%s</span>%s</a>',
+			'<a class="btn btn--%s" href="%s"%s><span>%s</span>%s</a>',
 			esc_attr( $style ),
 			esc_url( $b['url'] ),
+			$external ? ' target="_blank" rel="noopener"' : '',
 			esc_html( $b['label'] ),
 			rb_icon( 'arrow', 'btn__icon' )
 		);
