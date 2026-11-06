@@ -688,9 +688,9 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 .portal__media { position: relative; }
 .portal__media::before { content: ""; position: absolute; z-index: 0; inset: 8% -6% -8% 14%; border-radius: 28px; background: radial-gradient(closest-side, rgba(233, 82, 27, .35), transparent); filter: blur(30px); pointer-events: none; }
 .bg-white .portal__media::before, .bg-light .portal__media::before { background: radial-gradient(closest-side, rgba(106, 170, 211, .35), transparent); }
-.portal__badge { position: absolute; z-index: 3; left: 28px; bottom: -26px; display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: var(--orange); color: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); font-family: var(--font-head); font-weight: 600; line-height: 1.2; animation: float 6s ease-in-out infinite; }
+.portal__badge { position: absolute; z-index: 3; right: 28px; bottom: -26px; display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: var(--orange); color: #fff; border-radius: 14px; box-shadow: var(--shadow-lg); font-family: var(--font-head); font-weight: 600; line-height: 1.2; animation: float 6s ease-in-out infinite; }
 .portal__badge .arrow-mark { width: 22px; color: #fff; }
-@media (max-width: 560px) { .portal__badge { left: 12px; bottom: -22px; font-size: .9rem; padding: 11px 14px; } }
+@media (max-width: 560px) { .portal__badge { right: 12px; bottom: -22px; font-size: .9rem; padding: 11px 14px; } }
 
 /* The illustrated dashboard. Sized with container units so it scales as one picture. */
 .pm { position: relative; z-index: 1; container-type: inline-size; border-radius: 14px; background: #fff; color: var(--navy); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .55), 0 0 0 1px rgba(15, 39, 60, .08); overflow: visible; }
