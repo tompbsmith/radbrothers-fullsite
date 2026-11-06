@@ -45,7 +45,7 @@ $phone     = rb_opt( 'phone' );
 			<?php if ( $portal ) : ?>
 				<a class="portal-link portal-link--desktop" href="<?php echo esc_url( $portal ); ?>"><?php echo rb_icon( 'monitor' ); ?><span><?php echo esc_html( rb_opt( 'portal_label', 'Client portal' ) ); ?></span></a>
 			<?php endif; ?>
-			<a class="btn btn--primary btn--sm header-cta" href="<?php echo esc_url( $cta_url ); ?>"><span><?php echo esc_html( $cta_label ); ?></span><?php echo rb_btn_mark(); ?></a>
+			<a class="btn btn--primary btn--sm header-cta" href="<?php echo esc_url( $cta_url ); ?>"><span><?php echo esc_html( $cta_label ); ?></span><?php echo rb_icon( 'arrow', 'btn__icon' ); ?></a>
 			<button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" data-nav-toggle>
 				<span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
 				<span class="screen-reader-text">Menu</span>
