@@ -214,7 +214,7 @@ function rb_layouts() {
 				rb_f( $p . '_m', 'x', 'number', [ 'label' => 'Face X %', 'min' => 0, 'max' => 100, 'step' => 0.1, 'wrapper' => [ 'width' => 15 ] ] ),
 				rb_f( $p . '_m', 'y', 'number', [ 'label' => 'Face Y %', 'min' => 0, 'max' => 100, 'step' => 0.1, 'wrapper' => [ 'width' => 15 ] ] ),
 				rb_f( $p . '_m', 'bio', 'textarea', [ 'rows' => 2, 'new_lines' => '' ] ),
-				rb_f( $p . '_m', 'fact', 'text', [ 'label' => 'Fun fact', 'instructions' => 'Optional, e.g. "Always first in, usually with a bacon roll"' ] ),
+				rb_f( $p . '_m', 'fact', 'text', [ 'label' => 'Fun fact', 'instructions' => 'Optional, e.g. "Has a playlist for every length of drive"' ] ),
 			],
 		] ) ]
 	) );

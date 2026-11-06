@@ -24,6 +24,7 @@ function rb_run_migrations() {
 		'1.1.11-delivery-store' => 'rb_migrate_delivery_store',
 		'1.1.12-storage-card'   => 'rb_migrate_storage_card',
 		'1.1.13-team-facts'     => 'rb_migrate_team_facts',
+		'1.1.14-team-facts-2'   => 'rb_migrate_team_facts_2',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -484,6 +485,17 @@ function rb_migrate_team_facts() {
 		[ 'Came up with the arrow on the van.', 'Runs the office fantasy football league, badly.' ],
 		[ 'Has a spreadsheet for everything, including the office tea round.', 'In charge of the tea round. Takes it very seriously.' ],
 		[ 'Can put up a pop-up stand in under ten minutes.', 'Owns more Allen keys than anyone needs.' ],
+	];
+	foreach ( $map as $m ) {
+		rb_migrate_replace_value( 'sections\\_%\\_members\\_%\\_fact', $m[0], $m[1] );
+	}
+}
+
+/** Second pass on two of the team fun facts. Names are left as edited. */
+function rb_migrate_team_facts_2() {
+	$map = [
+		[ 'Always first in, usually with a bacon roll.', 'Has a playlist for every length of drive.' ],
+		[ 'Runs the office fantasy football league, badly.', 'Keeps the office plants alive. Mostly.' ],
 	];
 	foreach ( $map as $m ) {
 		rb_migrate_replace_value( 'sections\\_%\\_members\\_%\\_fact', $m[0], $m[1] );

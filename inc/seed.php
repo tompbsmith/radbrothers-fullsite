@@ -721,10 +721,10 @@ function rb_seed_demo() {
 	/* ---------- About ---------- */
 	$faces   = [ [ 13.75, 40.0 ], [ 28.75, 36.15 ], [ 43.33, 33.08 ], [ 57.5, 33.85 ], [ 71.67, 36.92 ], [ 86.25, 40.38 ] ];
 	$people  = [
-		[ 'Alex', 'Operations', 'Keeps the vans moving and the warehouse in order. If your stand is in storage, Alex knows exactly where.', 'Always first in, usually with a bacon roll.' ],
+		[ 'Alex', 'Operations', 'Keeps the vans moving and the warehouse in order. If your stand is in storage, Alex knows exactly where.', 'Has a playlist for every length of drive.' ],
 		[ 'Sam', 'Lead driver', 'Has delivered to more campuses than most prospectus photographers. Calm under any build deadline.', 'Has strong opinions on the best motorway services.' ],
 		[ 'Jordan', 'Co-founder & Director', 'Started Rad Brothers with a van and a promise to always turn up on time. Still answers the phone.', 'Still answers the phone on Sundays, despite being told not to.' ],
-		[ 'Chris', 'Co-founder & Director', 'Looks after clients and plans the busy seasons, so every event in the diary has a van and a team.', 'Runs the office fantasy football league, badly.' ],
+		[ 'Laura', 'Co-founder & Director', 'Looks after clients and plans the busy seasons, so every event in the diary has a van and a team.', 'Keeps the office plants alive. Mostly.' ],
 		[ 'Taylor', 'Client coordinator', 'Your first point of contact. Takes the details, books the slots and keeps everyone in the loop.', 'In charge of the tea round. Takes it very seriously.' ],
 		[ 'Morgan', 'Stand build technician', 'Builds stands of every shape and size, and takes them down without a scratch.', 'Owns more Allen keys than anyone needs.' ],
 	];
