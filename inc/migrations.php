@@ -25,6 +25,7 @@ function rb_run_migrations() {
 		'1.1.12-storage-card'   => 'rb_migrate_storage_card',
 		'1.1.13-team-facts'     => 'rb_migrate_team_facts',
 		'1.1.14-team-facts-2'   => 'rb_migrate_team_facts_2',
+		'1.1.15-team-facts-3'   => 'rb_migrate_team_facts_3',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -496,6 +497,23 @@ function rb_migrate_team_facts_2() {
 	$map = [
 		[ 'Always first in, usually with a bacon roll.', 'Has a playlist for every length of drive.' ],
 		[ 'Runs the office fantasy football league, badly.', 'Keeps the office plants alive. Mostly.' ],
+	];
+	foreach ( $map as $m ) {
+		rb_migrate_replace_value( 'sections\\_%\\_members\\_%\\_fact', $m[0], $m[1] );
+	}
+}
+
+/** Re-apply the new fun facts after an editor save restored older ones. */
+function rb_migrate_team_facts_3() {
+	$map = [
+		[ 'Can reverse a Luton into any loading bay in the country.', 'Has a playlist for every length of drive.' ],
+		[ 'Always first in, usually with a bacon roll.', 'Has a playlist for every length of drive.' ],
+		[ 'Knows every motorway services between here and the NEC.', 'Has strong opinions on the best motorway services.' ],
+		[ 'Has never missed a build slot. Not once.', 'Still answers the phone on Sundays, despite being told not to.' ],
+		[ 'Came up with the arrow on the van.', 'Keeps the office plants alive. Mostly.' ],
+		[ 'Runs the office fantasy football league, badly.', 'Keeps the office plants alive. Mostly.' ],
+		[ 'Has a spreadsheet for everything, including the office tea round.', 'In charge of the tea round. Takes it very seriously.' ],
+		[ 'Can put up a pop-up stand in under ten minutes.', 'Owns more Allen keys than anyone needs.' ],
 	];
 	foreach ( $map as $m ) {
 		rb_migrate_replace_value( 'sections\\_%\\_members\\_%\\_fact', $m[0], $m[1] );
