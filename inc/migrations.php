@@ -17,6 +17,7 @@ function rb_run_migrations() {
 	$steps = [
 		'1.1.3-compare-anchor' => 'rb_migrate_compare_anchor',
 		'1.1.4-design-build'   => 'rb_migrate_design_build',
+		'1.1.5-service-steps'  => 'rb_migrate_service_steps',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -130,7 +131,7 @@ function rb_migrate_design_build() {
 		$count = (int) get_post_meta( $page->ID, $base . '_rows', true );
 		$subs  = [ 'label', 'col_1', 'col_2', 'col_3' ];
 		for ( $r = 0; $r < $count; $r++ ) {
-			if ( 'New stand designed and made' === get_post_meta( $page->ID, $base . '_rows_' . $r . '_label', true ) ) {
+			if ( in_array( get_post_meta( $page->ID, $base . '_rows_' . $r . '_label', true ), [ 'New stand designed and made', 'New stand designed and printed' ], true ) ) {
 				break 2;
 			}
 		}
@@ -152,5 +153,96 @@ function rb_migrate_design_build() {
 		update_post_meta( $page->ID, $base . '_rows', $count + 1 );
 		clean_post_cache( $page->ID );
 		break;
+	}
+}
+
+/**
+ * Insert a row into a repeater inside a flexible content section, shifting later rows down.
+ *
+ * @param array $values  Sub field name => value.
+ * @param string $key_prefix Field key prefix for the sub fields, e.g. field_rb_process_s_.
+ */
+function rb_migrate_insert_row( $post_id, $base, $index, $values, $key_prefix ) {
+	$count = (int) get_post_meta( $post_id, $base, true );
+	$subs  = array_keys( $values );
+	for ( $r = $count - 1; $r >= $index; $r-- ) {
+		foreach ( $subs as $sub ) {
+			$to = $base . '_' . ( $r + 1 ) . '_' . $sub;
+			update_post_meta( $post_id, $to, get_post_meta( $post_id, $base . '_' . $r . '_' . $sub, true ) );
+			update_post_meta( $post_id, '_' . $to, $key_prefix . $sub );
+		}
+	}
+	foreach ( $values as $sub => $v ) {
+		$k = $base . '_' . $index . '_' . $sub;
+		update_post_meta( $post_id, $k, $v );
+		update_post_meta( $post_id, '_' . $k, $key_prefix . $sub );
+	}
+	update_post_meta( $post_id, $base, $count + 1 );
+}
+
+/**
+ * Delivery Only has no storage. Full Service and Design & Build both include storage,
+ * and Design & Build adds a design and print step before collection.
+ */
+function rb_migrate_service_steps() {
+	global $wpdb;
+	$any = 'sections\_%';
+	$map = [
+		[ $any . '\_points', "Collection from you or our warehouse\nTimed delivery to the venue\nCollection and return after the event", "Collection from your office, campus or school\nTimed delivery to the venue\nCollection and return after the event" ],
+		[ $any . '\_points', "Stand designed and made by our partner\nDelivered, built and broken down by us\nHappy to work with your own builder too", "New stand designed and printed by our partner\nStored, delivered, built and broken down by us\nHappy to work with your own builder too" ],
+		[ $any . '\_rows\_%\_col\_1', 'Add-on', 'no' ],
+		[ $any . '\_rows\_%\_col\_3', 'Add-on', 'yes' ],
+		[ $any . '\_rows\_%\_label', 'New stand designed and made', 'New stand designed and printed' ],
+		[ $any . '\_steps\_%\_text', 'We collect your stand, graphics and materials from you, or pick them up from our warehouse.', 'We collect your stand, graphics and materials from you or the stand maker, or pick them up from our warehouse.' ],
+	];
+	foreach ( $map as $m ) {
+		rb_migrate_replace_value( $m[0], $m[1], $m[2] );
+	}
+
+	// Process timelines that show service levels.
+	$posts = $wpdb->get_col( "SELECT DISTINCT post_id FROM {$wpdb->postmeta} WHERE meta_key LIKE 'sections\\_%\\_steps\\_%\\_tiers'" );
+	foreach ( $posts as $post_id ) {
+		$post_id = (int) $post_id;
+		$layouts = get_post_meta( $post_id, 'sections', true );
+		if ( ! is_array( $layouts ) ) {
+			continue;
+		}
+		foreach ( $layouts as $i => $layout ) {
+			if ( 'process' !== $layout ) {
+				continue;
+			}
+			$base  = 'sections_' . $i . '_steps';
+			$count = (int) get_post_meta( $post_id, $base, true );
+			$plan  = -1;
+			$has_partner = false;
+			$has_design  = false;
+			for ( $r = 0; $r < $count; $r++ ) {
+				$title = get_post_meta( $post_id, $base . '_' . $r . '_title', true );
+				$tiers = (array) get_post_meta( $post_id, $base . '_' . $r . '_tiers', true );
+				if ( in_array( 'partner', $tiers, true ) ) {
+					$has_partner = true;
+				}
+				if ( 'Plan' === $title ) {
+					$plan = $r;
+				}
+				if ( 'Design & print' === $title ) {
+					$has_design = true;
+				}
+				// Storage is part of Design & Build too.
+				if ( 'Store' === $title && [ 'full' ] === array_values( $tiers ) ) {
+					update_post_meta( $post_id, $base . '_' . $r . '_tiers', [ 'full', 'partner' ] );
+				}
+			}
+			if ( $has_partner && ! $has_design && $plan >= 0 ) {
+				rb_migrate_insert_row( $post_id, $base, $plan + 1, [
+					'icon'   => 'design',
+					'title'  => 'Design & print',
+					'text'   => 'Our stand-making partner designs and prints your new stand and graphics, and we make sure it is ready in good time.',
+					'client' => 'Share your brief and sign off the design.',
+					'tiers'  => [ 'partner' ],
+				], 'field_rb_process_s_' );
+			}
+		}
+		clean_post_cache( $post_id );
 	}
 }
