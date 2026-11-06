@@ -12,9 +12,10 @@ rb_section_open( $s );
 			$img   = rb( $c, 'image' );
 			$icon  = rb( $c, 'icon' );
 			$tag   = rb( $c, 'tag' );
+			$dash  = ! empty( $c['dashed'] );
 			$pts   = array_filter( array_map( 'trim', explode( "\n", (string) rb( $c, 'points' ) ) ) );
 			?>
-			<article class="card<?php echo $img ? ' card--image' : ''; ?><?php echo $tag ? ' card--tagged' : ''; ?> reveal" style="--d:<?php echo (int) $i; ?>">
+			<article class="card<?php echo $img ? ' card--image' : ''; ?><?php echo $tag ? ' card--tagged' : ''; ?><?php echo $dash ? ' card--dashed' : ''; ?> reveal" style="--d:<?php echo (int) $i; ?>">
 				<?php if ( $img ) : ?>
 					<div class="card__media"><?php echo rb_image( $img, 'rb-card' ); ?></div>
 				<?php endif; ?>

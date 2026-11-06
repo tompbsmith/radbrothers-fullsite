@@ -175,6 +175,7 @@ function rb_seed_demo() {
 		[
 			'icon'       => 'design',
 			'tag'        => 'Add to either service',
+			'dashed'     => 1,
 			'title'      => 'Design & Print',
 			'text'       => 'Need a new stand, banners or flags? We get them designed and printed through a trusted partner, ready to go out with the rest of your kit.',
 			'points'     => "Stands, banners and flags designed and printed\nWorks with Delivery Only or Full Service\nOne contact from artwork to event day",

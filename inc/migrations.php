@@ -20,6 +20,7 @@ function rb_run_migrations() {
 		'1.1.5-service-steps'  => 'rb_migrate_service_steps',
 		'1.1.6-print-wording'  => 'rb_migrate_print_wording',
 		'1.1.7-two-levels'     => 'rb_migrate_two_levels',
+		'1.1.8-dashed-extra'   => 'rb_migrate_dashed_extra',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -393,6 +394,28 @@ function rb_migrate_two_levels() {
 					$tiers = array_values( array_diff( $tiers, [ 'partner' ] ) );
 				}
 				update_post_meta( $post_id, $key, $tiers );
+			}
+		}
+		clean_post_cache( $post_id );
+	}
+}
+
+/** The Design & Print card gets a dashed border to mark it as an optional extra. */
+function rb_migrate_dashed_extra() {
+	foreach ( rb_migrate_posts_with_layout( 'cards' ) as $post_id ) {
+		$layouts = get_post_meta( $post_id, 'sections', true );
+		foreach ( (array) $layouts as $i => $layout ) {
+			if ( 'cards' !== $layout ) {
+				continue;
+			}
+			$base  = 'sections_' . $i . '_cards';
+			$count = (int) get_post_meta( $post_id, $base, true );
+			for ( $r = 0; $r < $count; $r++ ) {
+				$k = $base . '_' . $r . '_dashed';
+				if ( 'Design & Print' === get_post_meta( $post_id, $base . '_' . $r . '_title', true ) && '' === (string) get_post_meta( $post_id, $k, true ) ) {
+					update_post_meta( $post_id, $k, 1 );
+					update_post_meta( $post_id, '_' . $k, 'field_rb_cards_c_dashed' );
+				}
 			}
 		}
 		clean_post_cache( $post_id );

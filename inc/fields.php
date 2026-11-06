@@ -118,6 +118,7 @@ function rb_layouts() {
 				rb_f( $p . '_c', 'image', 'image', [ 'instructions' => 'Optional photo instead of an icon', 'wrapper' => [ 'width' => 25 ] ] ),
 				rb_f( $p . '_c', 'tag', 'text', [ 'instructions' => 'Small label, e.g. "Most popular"', 'wrapper' => [ 'width' => 50 ] ] ),
 				rb_f( $p . '_c', 'title' ),
+				rb_f( $p . '_c', 'dashed', 'true_false', [ 'label' => 'Dashed border', 'instructions' => 'Marks the card as an optional extra', 'ui' => 1 ] ),
 				rb_f( $p . '_c', 'text', 'textarea', [ 'rows' => 3, 'new_lines' => '' ] ),
 				rb_f( $p . '_c', 'points', 'textarea', [ 'rows' => 3, 'new_lines' => '', 'instructions' => 'Optional tick list, one per line' ] ),
 				rb_f( $p . '_c', 'link_label', 'text', [ 'wrapper' => [ 'width' => 50 ] ] ),
