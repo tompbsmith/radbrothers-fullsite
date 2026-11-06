@@ -65,6 +65,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .btn:hover { --bg: var(--orange-dark); --bd: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgba(233, 82, 27, .7); }
 .btn__icon { width: 1.1em; height: 1.1em; transition: transform .25s var(--ease); }
 .btn:hover .btn__icon { transform: translateX(4px); }
+.btn__icon.btn__mark { width: .9em; height: auto; }
 .btn--ghost { --bg: transparent; --fg: currentColor; --bd: currentColor; }
 .btn--ghost:hover { --bg: var(--navy); --bd: var(--navy); --fg: #fff; box-shadow: none; }
 .hero .btn--ghost, .bg-navy .btn--ghost, .cta .btn--ghost { --fg: #fff; --bd: rgba(255, 255, 255, .55); }

@@ -24,7 +24,7 @@ $id      = rb( $s, 'anchor' );
 			<?php if ( rb( $s, 'text' ) ) : ?>
 				<p class="hero__text reveal" style="--d:2"><?php echo esc_html( $s['text'] ); ?></p>
 			<?php endif; ?>
-			<div class="reveal" style="--d:3"><?php echo rb_buttons( rb( $s, 'buttons', [] ), 'buttons--hero' ); ?></div>
+			<div class="reveal" style="--d:3"><?php echo rb_buttons( rb( $s, 'buttons', [] ), 'buttons--hero', true ); ?></div>
 			<?php if ( 'home' === $size && ! empty( $s['highlights'] ) ) : ?>
 				<ul class="hero__highlights reveal" style="--d:4">
 					<?php foreach ( $s['highlights'] as $hl ) : ?>
