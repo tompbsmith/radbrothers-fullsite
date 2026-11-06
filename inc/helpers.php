@@ -115,6 +115,24 @@ function rb_image( $img, $size = 'large', $attrs = [] ) {
 	return wp_get_attachment_image( $id, $size, false, $attrs );
 }
 
+/** True if the attachment is one of the starter-content placeholder photos. */
+function rb_is_placeholder( $img ) {
+	$id = is_array( $img ) ? ( $img['ID'] ?? 0 ) : (int) $img;
+	return $id && in_array( $id, array_map( 'intval', (array) get_option( 'rb_seed_media', [] ) ), true );
+}
+
+/**
+ * Hero image for a section: the page's own photo, or the site-wide default
+ * when the page has none or still has a starter placeholder.
+ */
+function rb_hero_image( $img ) {
+	$default = rb_opt( 'default_hero' );
+	if ( $default && ( ! $img || rb_is_placeholder( $img ) ) ) {
+		return $default;
+	}
+	return $img;
+}
+
 function rb_image_url( $img, $size = 'large' ) {
 	$id = is_array( $img ) ? ( $img['ID'] ?? 0 ) : (int) $img;
 	return $id ? wp_get_attachment_image_url( $id, $size ) : '';

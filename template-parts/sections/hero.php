@@ -9,7 +9,7 @@ $id      = rb( $s, 'anchor' );
 ?>
 <section class="hero hero--<?php echo esc_attr( $size ); ?>"<?php echo $id ? ' id="' . esc_attr( sanitize_title( $id ) ) . '"' : ''; ?> data-animate style="--overlay:<?php echo esc_attr( $overlay / 100 ); ?>">
 	<div class="hero__media" data-parallax>
-		<?php echo rb_image( rb( $s, 'image' ), 'rb-hero', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'class' => 'hero__img', 'sizes' => '100vw' ] ); ?>
+		<?php echo rb_image( rb_hero_image( rb( $s, 'image' ) ), 'rb-hero', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'class' => 'hero__img', 'sizes' => '100vw' ] ); ?>
 	</div>
 	<div class="hero__shade" aria-hidden="true"></div>
 	<div class="hero__mark" aria-hidden="true"><?php echo rb_arrow_mark(); ?></div>

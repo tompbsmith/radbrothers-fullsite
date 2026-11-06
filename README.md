@@ -57,11 +57,18 @@ The From address must be on a domain verified in Resend (contact@radbrothers.co.
 - Field groups are registered in `inc/fields.php`, so they ship with the theme and don't need syncing.
 - Logos in `assets/img/brand` were extracted from the brand sheet as SVG.
 
+## Hero images
+
+Set **Default hero image** in Site settings → Images to change every page header at once. It replaces empty heroes and the starter placeholder photos; any page with its own uploaded hero photo keeps it.
+
 ## Client portal links
 
 Set **Client portal URL** in Site settings. Any button whose link is `#portal-login` automatically points there. "Book a demo" buttons link to `/contact/?service=portal`, which pre-selects "Client portal demo" in the quote form.
 
 ## Changelog
+
+### 1.1.1
+- Site settings → Images: new Default hero image. Any hero with no image, or still showing a starter placeholder photo, uses it. Upload a photo in a page's Hero section to override it for that page
 
 ### 1.1.0
 - New Client portal showcase section with an animated, anonymised portal dashboard

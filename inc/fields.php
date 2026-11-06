@@ -84,7 +84,7 @@ function rb_layouts() {
 		rb_f( $p, 'size', 'select', [ 'choices' => [ 'home' => 'Large (home page)', 'page' => 'Compact (inner page)' ], 'default_value' => 'page', 'wrapper' => [ 'width' => 33 ] ] ),
 		rb_f( $p, 'overlay', 'range', [ 'label' => 'Image darkness', 'min' => 20, 'max' => 90, 'default_value' => 60, 'append' => '%', 'wrapper' => [ 'width' => 33 ] ] ),
 		rb_anchor_field( $p ),
-		rb_f( $p, 'image', 'image' ),
+		rb_f( $p, 'image', 'image', [ 'instructions' => 'Leave empty to use the Default hero image from Site settings → Images.' ] ),
 		rb_f( $p, 'eyebrow', 'text' ),
 		rb_f( $p, 'heading', 'textarea', [ 'rows' => 2, 'new_lines' => '', 'instructions' => 'Wrap words in *asterisks* to highlight them in orange.' ] ),
 		rb_f( $p, 'text', 'textarea', [ 'rows' => 3, 'new_lines' => '' ] ),
@@ -381,6 +381,9 @@ add_action( 'acf/init', function () {
 			rb_f( $p, 'footer_blurb', 'textarea', [ 'rows' => 3, 'new_lines' => '' ] ),
 			rb_f( $p, 'company_number', 'text', [ 'wrapper' => [ 'width' => 50 ] ] ),
 			rb_f( $p, 'registered_address', 'text', [ 'wrapper' => [ 'width' => 50 ] ] ),
+
+			[ 'key' => 'field_rb_opt_tab_images', 'label' => 'Images', 'type' => 'tab' ],
+			rb_f( $p, 'default_hero', 'image', [ 'label' => 'Default hero image', 'instructions' => 'Used in the hero of every page that has no image of its own, or still has a starter placeholder photo. To give one page a different photo, upload it in that page\'s Hero section. Landscape, at least 2000px wide.' ] ),
 
 			[ 'key' => 'field_rb_opt_tab_form', 'label' => 'Contact form', 'type' => 'tab' ],
 			rb_f( $p, 'form_to', 'email', [ 'label' => 'Send enquiries to', 'wrapper' => [ 'width' => 50 ] ] ),
