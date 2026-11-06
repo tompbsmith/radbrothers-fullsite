@@ -26,6 +26,7 @@ function rb_run_migrations() {
 		'1.1.13-team-facts'     => 'rb_migrate_team_facts',
 		'1.1.14-team-facts-2'   => 'rb_migrate_team_facts_2',
 		'1.1.15-team-facts-3'   => 'rb_migrate_team_facts_3',
+		'1.2.0-portal-url'      => 'rb_migrate_portal_url',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -517,5 +518,31 @@ function rb_migrate_team_facts_3() {
 	];
 	foreach ( $map as $m ) {
 		rb_migrate_replace_value( 'sections\\_%\\_members\\_%\\_fact', $m[0], $m[1] );
+	}
+}
+
+/**
+ * Site settings → Client portal URL still pointed at the home page's portal section.
+ * Set it to the real portal, and point buttons that had the portal address typed in
+ * back at #portal-login so every portal link follows the one setting.
+ */
+function rb_migrate_portal_url() {
+	global $wpdb;
+	$real    = 'https://theradbrothdev.wpenginepowered.com/';
+	$current = (string) get_option( 'options_portal_url', '' );
+	$placeholders = [ '', home_url( '/#portal' ), home_url( '#portal' ), '/#portal' ];
+	if ( in_array( $current, $placeholders, true ) ) {
+		update_option( 'options_portal_url', $real );
+		update_option( '_options_portal_url', 'field_rb_opt_portal_url' );
+	}
+	$rows = $wpdb->get_results( $wpdb->prepare(
+		"SELECT meta_id, post_id FROM {$wpdb->postmeta} WHERE meta_key LIKE %s AND meta_value IN (%s, %s)",
+		'sections\_%\_buttons\_%\_url',
+		$real,
+		untrailingslashit( $real )
+	) );
+	foreach ( $rows as $r ) {
+		update_metadata_by_mid( 'post', (int) $r->meta_id, '#portal-login' );
+		clean_post_cache( (int) $r->post_id );
 	}
 }

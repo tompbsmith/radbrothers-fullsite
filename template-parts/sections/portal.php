@@ -32,7 +32,11 @@ rb_section_open( $s, 'portal--mock-' . $side, 'navy' );
 			<?php if ( $shot ) : ?>
 				<div class="pm pm--shot">
 					<div class="pm__chrome"><span class="pm__dots"><i></i><i></i><i></i></span><span class="pm__url"><?php echo rb_icon( 'shield' ); ?>Client portal</span></div>
-					<?php echo rb_image( $shot, 'large', [ 'class' => 'pm__shot' ] ); ?>
+					<?php
+					$shot_id  = is_array( $shot ) ? ( $shot['ID'] ?? 0 ) : (int) $shot;
+					$shot_alt = trim( (string) get_post_meta( $shot_id, '_wp_attachment_image_alt', true ) );
+					echo rb_image( $shot, 'large', [ 'class' => 'pm__shot', 'alt' => $shot_alt ? $shot_alt : 'The Rad Brothers client portal, showing upcoming events and items to order' ] );
+					?>
 				</div>
 			<?php else : ?>
 				<?php get_template_part( 'template-parts/portal-mockup' ); ?>

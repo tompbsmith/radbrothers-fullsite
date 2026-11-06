@@ -29,6 +29,15 @@ function rb_opt( $name, $default = '' ) {
 	return ( null === $v || '' === $v || false === $v ) ? $default : $v;
 }
 
+/** ' target="_blank" rel="noopener"' when a URL points at another website, else ''. */
+function rb_link_target( $url ) {
+	$host = wp_parse_url( (string) $url, PHP_URL_HOST );
+	if ( $host && strtolower( $host ) !== strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) ) {
+		return ' target="_blank" rel="noopener"';
+	}
+	return '';
+}
+
 /** Safe array getter. */
 function rb( $arr, $key, $default = '' ) {
 	return ( is_array( $arr ) && isset( $arr[ $key ] ) && '' !== $arr[ $key ] && null !== $arr[ $key ] ) ? $arr[ $key ] : $default;
@@ -63,6 +72,8 @@ function rb_icon_paths() {
 		'quote'     => '<path fill="currentColor" stroke="none" d="M4 18v-5.5C4 8.4 6 6 9.5 5l.8 1.6C8.3 7.5 7.4 9 7.3 11H10v7H4zm10 0v-5.5c0-4.1 2-6.5 5.5-7.5l.8 1.6c-2 .9-2.9 2.4-3 4.4H20v7h-6z"/>',
 		'close'     => '<path d="M6 6l12 12M18 6L6 18"/>',
 		'plus'      => '<path d="M12 5v14M5 12h14"/>',
+		'pause'     => '<path d="M9 5v14M15 5v14"/>',
+		'play'      => '<path d="M8 5l11 7-11 7z"/>',
 	];
 }
 
@@ -155,14 +166,11 @@ function rb_buttons( $buttons, $class = '' ) {
 		if ( '#portal-login' === trim( $b['url'] ) ) {
 			$b['url'] = rb_opt( 'portal_url', '#' );
 		}
-		// Links to other websites open in a new tab.
-		$host     = wp_parse_url( $b['url'], PHP_URL_HOST );
-		$external = $host && strtolower( $host ) !== strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
 		$html .= sprintf(
 			'<a class="btn btn--%s" href="%s"%s><span>%s</span>%s</a>',
 			esc_attr( $style ),
 			esc_url( $b['url'] ),
-			$external ? ' target="_blank" rel="noopener"' : '',
+			rb_link_target( $b['url'] ), // links to other websites open in a new tab
 			esc_html( $b['label'] ),
 			rb_icon( 'arrow', 'btn__icon' )
 		);

@@ -14,9 +14,9 @@ rb_section_open( $s, 'process--' . $style, 'light' );
 	<?php if ( 'detailed' === $style && $show_tiers ) : ?>
 		<div class="tier-filter reveal" role="group" aria-label="Show steps for a service level">
 			<span class="tier-filter__label">Show me:</span>
-			<button type="button" class="tier-btn is-active" data-tier="all">Everything</button>
+			<button type="button" class="tier-btn is-active" data-tier="all" aria-pressed="true">Everything</button>
 			<?php foreach ( $tier_names as $k => $n ) : ?>
-				<button type="button" class="tier-btn" data-tier="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $n ); ?></button>
+				<button type="button" class="tier-btn" data-tier="<?php echo esc_attr( $k ); ?>" aria-pressed="false"><?php echo esc_html( $n ); ?></button>
 			<?php endforeach; ?>
 		</div>
 	<?php endif; ?>

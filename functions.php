@@ -9,7 +9,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'RB_VERSION', '1.1.20' );
+define( 'RB_VERSION', '1.2.0' );
 define( 'RB_DIR', get_template_directory() );
 define( 'RB_URI', get_template_directory_uri() );
 

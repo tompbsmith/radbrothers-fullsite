@@ -27,7 +27,7 @@ rb_section_open( $s );
 					<span class="spot__dot" aria-hidden="true"></span>
 					<span class="screen-reader-text"><?php echo esc_html( rb( $m, 'name' ) . ', ' . rb( $m, 'role' ) ); ?></span>
 				</button>
-				<div class="team-card" id="<?php echo esc_attr( $uid . '-card-' . $i ); ?>" data-card="<?php echo (int) $i; ?>" data-x="<?php echo esc_attr( $x ); ?>" data-y="<?php echo esc_attr( $y ); ?>" style="--x:<?php echo esc_attr( $x ); ?>%;--y:<?php echo esc_attr( $y ); ?>%" role="dialog" aria-label="<?php echo esc_attr( rb( $m, 'name' ) ); ?>">
+				<div class="team-card" id="<?php echo esc_attr( $uid . '-card-' . $i ); ?>" data-card="<?php echo (int) $i; ?>" data-x="<?php echo esc_attr( $x ); ?>" data-y="<?php echo esc_attr( $y ); ?>" style="--x:<?php echo esc_attr( $x ); ?>%;--y:<?php echo esc_attr( $y ); ?>%">
 					<p class="team-card__role"><?php echo esc_html( rb( $m, 'role' ) ); ?></p>
 					<h3 class="team-card__name"><?php echo esc_html( rb( $m, 'name' ) ); ?></h3>
 					<?php if ( rb( $m, 'bio' ) ) : ?><p class="team-card__bio"><?php echo esc_html( $m['bio'] ); ?></p><?php endif; ?>

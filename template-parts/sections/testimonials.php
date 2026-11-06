@@ -9,7 +9,7 @@ rb_section_open( $s, 'testimonials--' . $display, 'light' );
 	<?php if ( 'single' === $display ) : ?>
 		<div class="quote-slider reveal" style="--d:2" data-slider>
 			<div class="quote-slider__mark" aria-hidden="true"><?php echo rb_icon( 'quote' ); ?></div>
-			<div class="quote-slider__track" aria-live="polite">
+			<div class="quote-slider__track" aria-live="off" data-track>
 				<?php foreach ( $items as $i => $t ) : ?>
 					<figure class="quote-slide<?php echo 0 === $i ? ' is-active' : ''; ?>" data-slide <?php echo $i ? 'hidden' : ''; ?>>
 						<blockquote><p><?php echo esc_html( rb( $t, 'quote' ) ); ?></p></blockquote>
@@ -21,9 +21,10 @@ rb_section_open( $s, 'testimonials--' . $display, 'light' );
 				<div class="quote-slider__nav">
 					<button type="button" class="round-btn round-btn--prev" data-prev aria-label="Previous testimonial"><?php echo rb_icon( 'chevron' ); ?></button>
 					<div class="dots">
-						<?php foreach ( $items as $i => $t ) : ?><button type="button" class="dot<?php echo 0 === $i ? ' is-active' : ''; ?>" data-dot="<?php echo (int) $i; ?>" aria-label="Show testimonial <?php echo (int) $i + 1; ?>"></button><?php endforeach; ?>
+						<?php foreach ( $items as $i => $t ) : ?><button type="button" class="dot<?php echo 0 === $i ? ' is-active' : ''; ?>" data-dot="<?php echo (int) $i; ?>" aria-label="Show testimonial <?php echo (int) $i + 1; ?>"<?php echo 0 === $i ? ' aria-current="true"' : ''; ?>></button><?php endforeach; ?>
 					</div>
 					<button type="button" class="round-btn" data-next aria-label="Next testimonial"><?php echo rb_icon( 'chevron' ); ?></button>
+					<button type="button" class="round-btn round-btn--toggle" data-pause aria-label="Pause testimonials"><?php echo rb_icon( 'pause', 'icon--pause' ); ?><?php echo rb_icon( 'play', 'icon--play' ); ?></button>
 				</div>
 			<?php endif; ?>
 		</div>

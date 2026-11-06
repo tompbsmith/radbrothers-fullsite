@@ -27,34 +27,53 @@
 
 	/* ---------- Mobile navigation ---------- */
 	var toggle = doc.querySelector('[data-nav-toggle]');
-	if (toggle) {
-		toggle.addEventListener('click', function () {
-			var open = body.classList.toggle('nav-open');
-			toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+	var nav = doc.getElementById('site-nav');
+	// While the menu is open, everything outside the header is inert so focus stays in the menu.
+	var outside = [doc.getElementById('main'), doc.querySelector('.site-footer'), doc.querySelector('.site-header__brand')].filter(Boolean);
+	function setNav(open, returnFocus) {
+		body.classList.toggle('nav-open', open);
+		toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+		outside.forEach(function (el) { el.inert = open; });
+		if (open) {
 			body.classList.remove('header-hidden');
-		});
+			var first = nav && nav.querySelector('a');
+			if (first) setTimeout(function () { first.focus(); }, 50);
+		} else if (returnFocus) {
+			toggle.focus();
+		}
+	}
+	if (toggle) {
+		toggle.addEventListener('click', function () { setNav(!body.classList.contains('nav-open'), false); });
 		doc.addEventListener('keydown', function (e) {
-			if (e.key === 'Escape' && body.classList.contains('nav-open')) {
-				body.classList.remove('nav-open');
-				toggle.setAttribute('aria-expanded', 'false');
-				toggle.focus();
-			}
+			if (e.key === 'Escape' && body.classList.contains('nav-open')) setNav(false, true);
+		});
+		window.addEventListener('resize', function () {
+			if (window.innerWidth > 1023 && body.classList.contains('nav-open')) setNav(false, false);
+		});
+		// Close the menu when an in-page link is followed.
+		doc.querySelectorAll('.site-nav a[href*="#"]').forEach(function (a) {
+			a.addEventListener('click', function () { if (body.classList.contains('nav-open')) setNav(false, false); });
 		});
 	}
-	// Sub-menus open on tap in the mobile menu.
-	doc.querySelectorAll('.site-nav .menu-item-has-children > a').forEach(function (a) {
-		a.addEventListener('click', function (e) {
-			if (window.innerWidth > 1023) return;
-			var sub = a.parentElement.querySelector('.sub-menu');
-			if (sub && !sub.classList.contains('is-open')) {
-				e.preventDefault();
-				sub.classList.add('is-open');
-			}
+	// Sub-menus: a separate button opens them in the mobile menu; the parent link still goes to its page.
+	doc.querySelectorAll('.site-nav .menu-item-has-children').forEach(function (li, n) {
+		var link = li.querySelector(':scope > a');
+		var sub = li.querySelector(':scope > .sub-menu');
+		if (!link || !sub) return;
+		if (!sub.id) sub.id = 'sub-menu-' + n;
+		var btn = doc.createElement('button');
+		btn.type = 'button';
+		btn.className = 'sub-toggle';
+		btn.setAttribute('aria-expanded', 'false');
+		btn.setAttribute('aria-controls', sub.id);
+		btn.setAttribute('aria-label', 'Show ' + link.textContent.trim() + ' pages');
+		btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6"/></svg>';
+		link.after(btn);
+		btn.addEventListener('click', function () {
+			var open = sub.classList.toggle('is-open');
+			btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+			btn.setAttribute('aria-label', (open ? 'Hide ' : 'Show ') + link.textContent.trim() + ' pages');
 		});
-	});
-	// Close the menu when an in-page link is followed.
-	doc.querySelectorAll('.site-nav a[href*="#"]').forEach(function (a) {
-		a.addEventListener('click', function () { body.classList.remove('nav-open'); });
 	});
 
 	/* ---------- Scroll reveal ---------- */
@@ -98,11 +117,29 @@
 		filter.addEventListener('click', function (e) {
 			var btn = e.target.closest('[data-tier]');
 			if (!btn) return;
-			filter.querySelectorAll('[data-tier]').forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+			filter.querySelectorAll('[data-tier]').forEach(function (b) {
+				b.classList.toggle('is-active', b === btn);
+				b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+			});
 			var tier = btn.getAttribute('data-tier');
+			var name = btn.textContent.trim();
 			steps.forEach(function (s) {
 				var tiers = (s.getAttribute('data-tiers') || '').split(' ');
-				s.classList.toggle('is-dimmed', tier !== 'all' && tiers.indexOf(tier) === -1);
+				var dim = tier !== 'all' && tiers.indexOf(tier) === -1;
+				s.classList.toggle('is-dimmed', dim);
+				// Greyed-out steps are only visual, so say it for screen readers too.
+				var note = s.querySelector('.step__note');
+				if (dim) {
+					if (!note) {
+						note = doc.createElement('span');
+						note.className = 'step__note screen-reader-text';
+						var title = s.querySelector('.step__title');
+						(title || s).appendChild(note);
+					}
+					note.textContent = ' (not included in ' + name + ')';
+				} else if (note) {
+					note.remove();
+				}
 			});
 		});
 	});
@@ -111,27 +148,64 @@
 	doc.querySelectorAll('[data-slider]').forEach(function (slider) {
 		var slides = slider.querySelectorAll('[data-slide]');
 		var dots = slider.querySelectorAll('[data-dot]');
+		var track = slider.querySelector('[data-track]');
+		var pauseBtn = slider.querySelector('[data-pause]');
 		if (slides.length < 2) return;
 		var i = 0;
 		var timer;
-		function go(n) {
+		var userPaused = false;
+		var focusPaused = false;
+		var hoverPaused = false;
+		function go(n, byUser) {
 			i = (n + slides.length) % slides.length;
+			// Only announce changes the visitor asked for, never the automatic ones.
+			if (track) track.setAttribute('aria-live', byUser ? 'polite' : 'off');
 			slides.forEach(function (s, k) {
 				s.classList.toggle('is-active', k === i);
 				if (k === i) s.removeAttribute('hidden'); else s.setAttribute('hidden', '');
 			});
-			dots.forEach(function (d, k) { d.classList.toggle('is-active', k === i); });
+			dots.forEach(function (d, k) {
+				d.classList.toggle('is-active', k === i);
+				if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+			});
 		}
 		function auto() {
 			clearInterval(timer);
-			if (!reduceMotion) timer = setInterval(function () { go(i + 1); }, 7000);
+			if (reduceMotion || userPaused || focusPaused || hoverPaused) return;
+			timer = setInterval(function () { go(i + 1, false); }, 7000);
 		}
-		slider.querySelector('[data-next]').addEventListener('click', function () { go(i + 1); auto(); });
-		slider.querySelector('[data-prev]').addEventListener('click', function () { go(i - 1); auto(); });
-		dots.forEach(function (d) { d.addEventListener('click', function () { go(+d.getAttribute('data-dot')); auto(); }); });
-		slider.addEventListener('mouseenter', function () { clearInterval(timer); });
-		slider.addEventListener('mouseleave', auto);
+		function setPaused(p) {
+			userPaused = p;
+			slider.classList.toggle('is-paused', p);
+			if (pauseBtn) pauseBtn.setAttribute('aria-label', p ? 'Play testimonials' : 'Pause testimonials');
+			auto();
+		}
+		slider.querySelector('[data-next]').addEventListener('click', function () { go(i + 1, true); auto(); });
+		slider.querySelector('[data-prev]').addEventListener('click', function () { go(i - 1, true); auto(); });
+		dots.forEach(function (d) { d.addEventListener('click', function () { go(+d.getAttribute('data-dot'), true); auto(); }); });
+		if (pauseBtn) {
+			if (reduceMotion) pauseBtn.hidden = true;
+			pauseBtn.addEventListener('click', function () { setPaused(!userPaused); });
+		}
+		slider.addEventListener('mouseenter', function () { hoverPaused = true; auto(); });
+		slider.addEventListener('mouseleave', function () { hoverPaused = false; auto(); });
+		slider.addEventListener('focusin', function () { focusPaused = true; auto(); });
+		slider.addEventListener('focusout', function (e) {
+			if (!slider.contains(e.relatedTarget)) { focusPaused = false; auto(); }
+		});
 		auto();
+	});
+
+	/* ---------- Logo strip: pause control ---------- */
+	doc.querySelectorAll('[data-marquee-toggle]').forEach(function (btn) {
+		var marquee = btn.closest('section').querySelector('.marquee');
+		if (!marquee) return;
+		if (reduceMotion) { btn.hidden = true; return; }
+		btn.addEventListener('click', function () {
+			var paused = marquee.classList.toggle('is-paused');
+			btn.classList.toggle('is-paused', paused);
+			btn.setAttribute('aria-label', paused ? 'Play the scrolling logos' : 'Pause the scrolling logos');
+		});
 	});
 
 	/* ---------- Meet the team: hotspots on the group photo ---------- */

@@ -1060,7 +1060,7 @@ function rb_seed_demo() {
 		'cta_label'     => 'Get a quote',
 		'cta_url'       => $quote_url,
 		'portal_label'  => 'Client portal',
-		'portal_url'    => home_url( '/#portal' ),
+		'portal_url'    => 'https://theradbrothdev.wpenginepowered.com/',
 		'footer_blurb'  => 'Family-run exhibition logistics, specialising in careers and educational events. We collect, store, deliver, build and return, so your stand is ready when you are.',
 		'form_to'       => 'contact@radbrothers.co.uk',
 		'form_from'     => 'Rad Brothers Website <contact@radbrothers.co.uk>',

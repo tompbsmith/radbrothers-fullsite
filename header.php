@@ -32,8 +32,9 @@ $phone     = rb_opt( 'phone' );
 			] );
 			?>
 			<div class="site-nav__extra">
+				<a class="btn btn--primary nav-cta" href="<?php echo esc_url( $cta_url ); ?>"><span><?php echo esc_html( $cta_label ); ?></span><?php echo rb_icon( 'arrow', 'btn__icon' ); ?></a>
 				<?php if ( $portal ) : ?>
-					<a class="portal-link" href="<?php echo esc_url( $portal ); ?>"><?php echo rb_icon( 'monitor' ); ?><?php echo esc_html( rb_opt( 'portal_label', 'Client portal' ) ); ?></a>
+					<a class="portal-link" href="<?php echo esc_url( $portal ); ?>"<?php echo rb_link_target( $portal ); ?>><?php echo rb_icon( 'monitor' ); ?><?php echo esc_html( rb_opt( 'portal_label', 'Client portal' ) ); ?></a>
 				<?php endif; ?>
 				<?php if ( $phone ) : ?>
 					<a class="nav-phone" href="<?php echo esc_attr( rb_tel( $phone ) ); ?>"><?php echo rb_icon( 'phone' ); ?><?php echo esc_html( $phone ); ?></a>
@@ -43,7 +44,7 @@ $phone     = rb_opt( 'phone' );
 
 		<div class="site-header__actions">
 			<?php if ( $portal ) : ?>
-				<a class="portal-link portal-link--desktop" href="<?php echo esc_url( $portal ); ?>"><?php echo rb_icon( 'monitor' ); ?><span><?php echo esc_html( rb_opt( 'portal_label', 'Client portal' ) ); ?></span></a>
+				<a class="portal-link portal-link--desktop" href="<?php echo esc_url( $portal ); ?>"<?php echo rb_link_target( $portal ); ?>><?php echo rb_icon( 'monitor' ); ?><span><?php echo esc_html( rb_opt( 'portal_label', 'Client portal' ) ); ?></span></a>
 			<?php endif; ?>
 			<a class="btn btn--primary btn--sm header-cta" href="<?php echo esc_url( $cta_url ); ?>"><span><?php echo esc_html( $cta_label ); ?></span><?php echo rb_icon( 'arrow', 'btn__icon' ); ?></a>
 			<button class="nav-toggle" type="button" aria-controls="site-nav" aria-expanded="false" data-nav-toggle>

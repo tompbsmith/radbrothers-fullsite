@@ -22,6 +22,9 @@ rb_section_open( $s, 'logos--' . $display );
 			<ul class="marquee__track"><?php echo $items; ?></ul>
 			<ul class="marquee__track" aria-hidden="true"><?php echo $items; ?></ul>
 		</div>
+		<div class="container marquee__controls">
+			<button type="button" class="marquee__toggle" data-marquee-toggle aria-label="Pause the scrolling logos"><?php echo rb_icon( 'pause', 'icon--pause' ); ?><?php echo rb_icon( 'play', 'icon--play' ); ?></button>
+		</div>
 	<?php else : ?>
 		<div class="container"><ul class="logo-grid reveal-group"><?php echo str_replace( '<li class="logo-item">', '<li class="logo-item reveal">', $items ); ?></ul></div>
 	<?php endif; ?>
