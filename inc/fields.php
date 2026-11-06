@@ -404,6 +404,7 @@ add_action( 'acf/init', function () {
 			rb_f( $p, 'hero_focal_y_mobile', 'number', [ 'label' => 'Default focus down (mobile)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'wrapper' => [ 'width' => 25 ] ] ),
 
 			[ 'key' => 'field_rb_opt_tab_form', 'label' => 'Contact form', 'type' => 'tab' ],
+			rb_f( $p, 'form_test_mode', 'true_false', [ 'label' => 'Test mode', 'instructions' => 'While on, the forms work as normal for visitors but nothing is emailed (not through Resend, and not through WordPress mail). People who send the form are told it was a test. Turn off before launch.', 'ui' => 1, 'ui_on_text' => 'Testing', 'ui_off_text' => 'Live' ] ),
 			rb_f( $p, 'form_to', 'email', [ 'label' => 'Send enquiries to', 'wrapper' => [ 'width' => 50 ] ] ),
 			rb_f( $p, 'form_from', 'text', [ 'label' => 'Send from', 'instructions' => 'Must be on a domain verified in Resend, e.g. Rad Brothers Website <contact@radbrothers.co.uk>', 'wrapper' => [ 'width' => 50 ] ] ),
 			rb_f( $p, 'resend_key', 'password', [ 'label' => 'Resend API key', 'instructions' => 'Better: define RB_RESEND_API_KEY in wp-config.php and leave this blank. If no key is set, the site falls back to wp_mail().' ] ),

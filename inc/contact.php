@@ -118,6 +118,12 @@ function rb_handle_contact() {
 	$html    = '<div style="font-family:Arial,sans-serif;font-size:15px;color:#0f273c"><h2 style="margin:0 0 12px">New enquiry from the website</h2><table>' . $rows . '</table></div>';
 	$subject = 'Website enquiry: ' . $fields['name'] . ( $fields['organisation'] ? ' (' . $fields['organisation'] . ')' : '' );
 
+	// Test mode: behave exactly as if it sent, but email nobody.
+	if ( rb_opt( 'form_test_mode' ) ) {
+		wp_safe_redirect( add_query_arg( 'rb_sent', 'test', $back ) . '#quote-form' );
+		exit;
+	}
+
 	$to   = rb_opt( 'form_to', get_option( 'admin_email' ) );
 	$from = rb_opt( 'form_from', 'Rad Brothers Website <contact@radbrothers.co.uk>' );
 	$key  = defined( 'RB_RESEND_API_KEY' ) ? RB_RESEND_API_KEY : rb_opt( 'resend_key' );
@@ -177,7 +183,9 @@ function rb_contact_form( $variant = 'full' ) {
 	}
 
 	ob_start();
-	if ( isset( $_GET['rb_sent'] ) ) : ?>
+	if ( isset( $_GET['rb_sent'] ) && 'test' === $_GET['rb_sent'] ) : ?>
+		<div class="form-notice form-notice--ok" role="status"><?php echo rb_icon( 'check' ); ?><div><strong>The form worked.</strong> The site is in test mode, so this enquiry wasn't sent to anyone.</div></div>
+	<?php elseif ( isset( $_GET['rb_sent'] ) ) : ?>
 		<div class="form-notice form-notice--ok" role="status"><?php echo rb_icon( 'check' ); ?><div><strong>Thanks, we have your enquiry.</strong> <?php echo esc_html( rb_opt( 'response_time', 'We reply within one working day.' ) ); ?></div></div>
 	<?php elseif ( $error ) : ?>
 		<div class="form-notice form-notice--error" role="alert"><div>

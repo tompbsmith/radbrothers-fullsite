@@ -28,6 +28,7 @@ function rb_run_migrations() {
 		'1.1.15-team-facts-3'   => 'rb_migrate_team_facts_3',
 		'1.2.0-portal-url'      => 'rb_migrate_portal_url',
 		'1.3.2-hero-focal'      => 'rb_migrate_hero_focal',
+		'1.3.9-form-test-mode'  => 'rb_migrate_form_test_mode',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -556,5 +557,13 @@ function rb_migrate_hero_focal() {
 			update_option( 'options_' . $k, $v );
 			update_option( '_options_' . $k, 'field_rb_opt_' . $k );
 		}
+	}
+}
+
+/** Staging review: stop enquiries reaching the client's inbox. Only runs while the site is private. */
+function rb_migrate_form_test_mode() {
+	if ( get_option( 'options_private_on' ) && '' === (string) get_option( 'options_form_test_mode', '' ) ) {
+		update_option( 'options_form_test_mode', 1 );
+		update_option( '_options_form_test_mode', 'field_rb_opt_form_test_mode' );
 	}
 }
