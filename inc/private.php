@@ -140,7 +140,8 @@ add_filter( 'acf/load_field/key=field_rb_opt_preview_info', function ( $field ) 
 		$when = '<strong>This link has expired.</strong> Turn on "Make a new preview link" and save, or choose a longer time.';
 	}
 	$field['message'] = '<p>Send this to anyone who needs to see the site without logging in. Opening it once lets them browse the whole site on that device.</p>'
-		. '<p><input type="text" readonly value="' . esc_attr( rb_preview_url() ) . '" style="width:100%;font-family:monospace" onclick="this.select()"></p>'
+		// ACF strips form inputs from message fields, so show the link as text people can select and copy.
+		. '<p><a href="' . esc_url( rb_preview_url() ) . '" target="_blank" rel="noopener"><code style="font-size:13px;word-break:break-all">' . esc_html( rb_preview_url() ) . '</code></a></p>'
 		. '<p>' . $when . '</p>';
 	return $field;
 } );
