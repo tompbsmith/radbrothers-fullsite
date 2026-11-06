@@ -85,6 +85,10 @@ function rb_layouts() {
 		rb_f( $p, 'overlay', 'range', [ 'label' => 'Image darkness', 'min' => 20, 'max' => 90, 'default_value' => 60, 'append' => '%', 'wrapper' => [ 'width' => 33 ] ] ),
 		rb_anchor_field( $p ),
 		rb_f( $p, 'image', 'image', [ 'instructions' => 'Leave empty to use the Default hero image from Site settings → Images.' ] ),
+		rb_f( $p, 'focal_x', 'number', [ 'label' => 'Focus across (desktop)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'instructions' => 'Which part of the photo stays in view: 0% is the left/top edge, 100% the right/bottom. Leave blank to use the defaults in Site settings → Images.', 'wrapper' => [ 'width' => 25 ] ] ),
+		rb_f( $p, 'focal_y', 'number', [ 'label' => 'Focus down (desktop)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'wrapper' => [ 'width' => 25 ] ] ),
+		rb_f( $p, 'focal_x_mobile', 'number', [ 'label' => 'Focus across (mobile)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'instructions' => 'Phones show a narrow slice of the photo. Leave blank to use the desktop value.', 'wrapper' => [ 'width' => 25 ] ] ),
+		rb_f( $p, 'focal_y_mobile', 'number', [ 'label' => 'Focus down (mobile)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'wrapper' => [ 'width' => 25 ] ] ),
 		rb_f( $p, 'eyebrow', 'text' ),
 		rb_f( $p, 'heading', 'textarea', [ 'rows' => 2, 'new_lines' => '', 'instructions' => 'Wrap words in *asterisks* to highlight them in orange.' ] ),
 		rb_f( $p, 'text', 'textarea', [ 'rows' => 3, 'new_lines' => '' ] ),
@@ -394,6 +398,10 @@ add_action( 'acf/init', function () {
 
 			[ 'key' => 'field_rb_opt_tab_images', 'label' => 'Images', 'type' => 'tab' ],
 			rb_f( $p, 'default_hero', 'image', [ 'label' => 'Default hero image', 'instructions' => 'Used in the hero of every page that has no image of its own, or still has a starter placeholder photo. To give one page a different photo, upload it in that page\'s Hero section. Landscape, at least 2000px wide.' ] ),
+			rb_f( $p, 'hero_focal_x', 'number', [ 'label' => 'Default focus across (desktop)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'instructions' => 'Which part of hero photos stays in view, unless a page sets its own: 0% is the left/top edge, 100% the right/bottom.', 'wrapper' => [ 'width' => 25 ] ] ),
+			rb_f( $p, 'hero_focal_y', 'number', [ 'label' => 'Default focus down (desktop)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'wrapper' => [ 'width' => 25 ] ] ),
+			rb_f( $p, 'hero_focal_x_mobile', 'number', [ 'label' => 'Default focus across (mobile)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'instructions' => 'Leave blank to use the desktop value.', 'wrapper' => [ 'width' => 25 ] ] ),
+			rb_f( $p, 'hero_focal_y_mobile', 'number', [ 'label' => 'Default focus down (mobile)', 'min' => 0, 'max' => 100, 'append' => '%', 'placeholder' => '50', 'wrapper' => [ 'width' => 25 ] ] ),
 
 			[ 'key' => 'field_rb_opt_tab_form', 'label' => 'Contact form', 'type' => 'tab' ],
 			rb_f( $p, 'form_to', 'email', [ 'label' => 'Send enquiries to', 'wrapper' => [ 'width' => 50 ] ] ),

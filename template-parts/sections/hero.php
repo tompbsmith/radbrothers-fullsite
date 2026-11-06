@@ -6,10 +6,23 @@ $heading = esc_html( rb( $s, 'heading' ) );
 $heading = preg_replace( '/\*(.+?)\*/', '<em>$1</em>', $heading );
 $tag     = 0 === $section_index ? 'h1' : 'h2';
 $id      = rb( $s, 'anchor' );
+
+// Focal point: this section's values, else the Site settings defaults; mobile falls back to desktop.
+$focal = function ( $key, $fallback = '' ) use ( $s ) {
+	$v = rb( $s, $key );
+	if ( '' === (string) $v ) {
+		$v = rb_opt( 'hero_' . $key );
+	}
+	return '' === (string) $v ? $fallback : max( 0, min( 100, (float) $v ) ) . '%';
+};
+$fx    = $focal( 'focal_x', '50%' );
+$fy    = $focal( 'focal_y', '50%' );
+$style = '--overlay:' . ( $overlay / 100 ) . ';--fx:' . $fx . ';--fy:' . $fy
+	. ';--fx-m:' . $focal( 'focal_x_mobile', $fx ) . ';--fy-m:' . $focal( 'focal_y_mobile', $fy );
 ?>
-<section class="hero hero--<?php echo esc_attr( $size ); ?>"<?php echo $id ? ' id="' . esc_attr( sanitize_title( $id ) ) . '"' : ''; ?> data-animate style="--overlay:<?php echo esc_attr( $overlay / 100 ); ?>">
+<section class="hero hero--<?php echo esc_attr( $size ); ?>"<?php echo $id ? ' id="' . esc_attr( sanitize_title( $id ) ) . '"' : ''; ?> data-animate style="<?php echo esc_attr( $style ); ?>">
 	<div class="hero__media" data-parallax>
-		<?php echo rb_image( rb_hero_image( rb( $s, 'image' ) ), 'rb-hero', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'class' => 'hero__img', 'sizes' => '100vw' ] ); ?>
+		<?php echo rb_image( rb_hero_image( rb( $s, 'image' ) ), 'full', [ 'loading' => 'eager', 'fetchpriority' => 'high', 'class' => 'hero__img', 'sizes' => '100vw' ] ); ?>
 	</div>
 	<div class="hero__shade" aria-hidden="true"></div>
 	<div class="hero__mark" aria-hidden="true"><?php echo rb_arrow_mark(); ?></div>

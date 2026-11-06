@@ -27,6 +27,7 @@ function rb_run_migrations() {
 		'1.1.14-team-facts-2'   => 'rb_migrate_team_facts_2',
 		'1.1.15-team-facts-3'   => 'rb_migrate_team_facts_3',
 		'1.2.0-portal-url'      => 'rb_migrate_portal_url',
+		'1.3.2-hero-focal'      => 'rb_migrate_hero_focal',
 	];
 	$changed = false;
 	foreach ( $steps as $id => $fn ) {
@@ -544,5 +545,16 @@ function rb_migrate_portal_url() {
 	foreach ( $rows as $r ) {
 		update_metadata_by_mid( 'post', (int) $r->meta_id, '#portal-login' );
 		clean_post_cache( (int) $r->post_id );
+	}
+}
+
+/** Match the one-pager's mobile hero framing (78% across, 60% down; 50% / 60% on desktop). */
+function rb_migrate_hero_focal() {
+	$defaults = [ 'hero_focal_x' => 50, 'hero_focal_y' => 60, 'hero_focal_x_mobile' => 78, 'hero_focal_y_mobile' => 60 ];
+	foreach ( $defaults as $k => $v ) {
+		if ( '' === (string) get_option( 'options_' . $k, '' ) ) {
+			update_option( 'options_' . $k, $v );
+			update_option( '_options_' . $k, 'field_rb_opt_' . $k );
+		}
 	}
 }
