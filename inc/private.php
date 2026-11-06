@@ -157,3 +157,18 @@ add_action( 'admin_bar_menu', function ( $bar ) {
 		'meta'  => [ 'title' => 'Only logged-in users and people with the preview link can see the site. Change this in Site settings → Private site.' ],
 	] );
 }, 100 );
+
+// Browsers autofill the WordPress username into Site settings text boxes (the Resend key is a
+// password field, which makes them treat the page as a login form). Switch autofill off there.
+add_action( 'acf/input/admin_footer', function () {
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( ! $screen || false === strpos( (string) $screen->id, 'rb-settings' ) ) {
+		return;
+	}
+	?>
+	<script>
+	document.querySelectorAll('.acf-field input[type="text"], .acf-field input[type="email"], .acf-field input[type="url"], .acf-field input[type="number"], .acf-field textarea').forEach(function (el) { el.setAttribute('autocomplete', 'off'); });
+	document.querySelectorAll('.acf-field input[type="password"]').forEach(function (el) { el.setAttribute('autocomplete', 'new-password'); });
+	</script>
+	<?php
+} );
