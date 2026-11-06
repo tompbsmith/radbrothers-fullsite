@@ -14,6 +14,11 @@ function rb_form_options() {
 	];
 }
 
+/** Services that don't involve a specific event, so the event fields are hidden. */
+function rb_form_no_event_services() {
+	return [ 'Client portal demo', 'Not sure yet' ];
+}
+
 add_action( 'admin_post_nopriv_rb_contact', 'rb_handle_contact' );
 add_action( 'admin_post_rb_contact', 'rb_handle_contact' );
 
@@ -42,6 +47,12 @@ function rb_handle_contact() {
 		'dates'        => sanitize_text_field( wp_unslash( $_POST['dates'] ?? '' ) ),
 		'message'      => sanitize_textarea_field( wp_unslash( $_POST['message'] ?? '' ) ),
 	];
+
+	// No event details for services that aren't tied to an event.
+	if ( in_array( $fields['service'], rb_form_no_event_services(), true ) ) {
+		$fields['event'] = '';
+		$fields['dates'] = '';
+	}
 
 	if ( ! $fields['name'] || ! is_email( $fields['email'] ) || ! $fields['message'] ) {
 		wp_safe_redirect( add_query_arg( 'rb_error', 'missing', $back ) . '#quote-form' );
@@ -120,7 +131,7 @@ function rb_contact_form( $variant = 'full' ) {
 				<?php endforeach; ?>
 			</fieldset>
 			<div class="field"><label for="rb-service">Service needed</label>
-				<select id="rb-service" name="service">
+				<select id="rb-service" name="service" data-no-event="<?php echo esc_attr( wp_json_encode( rb_form_no_event_services() ) ); ?>">
 					<?php
 					// Pre-select from ?service=portal (or any option name) so "Book a demo" buttons land ready to go.
 					$want = isset( $_GET['service'] ) ? strtolower( sanitize_text_field( wp_unslash( $_GET['service'] ) ) ) : '';
@@ -131,8 +142,8 @@ function rb_contact_form( $variant = 'full' ) {
 					<?php endforeach; ?>
 				</select>
 			</div>
-			<div class="field"><label for="rb-dates">Event date(s)</label><input id="rb-dates" name="dates" type="text" placeholder="e.g. 14–16 March"></div>
-			<div class="field field--full"><label for="rb-event">Event name and venue</label><input id="rb-event" name="event" type="text" placeholder="e.g. Spring careers fair, NEC Birmingham"></div>
+			<div class="field" data-event-field><label for="rb-dates">Event date(s)</label><input id="rb-dates" name="dates" type="text" placeholder="e.g. 14–16 March"></div>
+			<div class="field field--full" data-event-field><label for="rb-event">Event name and venue</label><input id="rb-event" name="event" type="text" placeholder="e.g. Spring careers fair, NEC Birmingham"></div>
 		<?php endif; ?>
 		<div class="field field--full"><label for="rb-msg">How can we help? <span>*</span></label><textarea id="rb-msg" name="message" rows="<?php echo 'full' === $variant ? 5 : 4; ?>" required></textarea></div>
 		<div class="field field--full form-foot">

@@ -264,5 +264,24 @@
 		}
 	});
 
+	/* ---------- Quote form: hide event fields for services with no event ---------- */
+	Array.prototype.forEach.call(doc.querySelectorAll('select[data-no-event]'), function (sel) {
+		var form = sel.form;
+		var noEvent = [];
+		try { noEvent = JSON.parse(sel.getAttribute('data-no-event')) || []; } catch (e) {}
+		var fields = form ? form.querySelectorAll('[data-event-field]') : [];
+		function sync() {
+			var hide = noEvent.indexOf(sel.value) !== -1;
+			Array.prototype.forEach.call(fields, function (f) {
+				f.hidden = hide;
+				Array.prototype.forEach.call(f.querySelectorAll('input, select, textarea'), function (i) {
+					i.disabled = hide; // disabled fields are never required or submitted
+				});
+			});
+		}
+		sel.addEventListener('change', sync);
+		sync();
+	});
+
 	onScroll();
 })();

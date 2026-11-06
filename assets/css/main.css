@@ -614,6 +614,7 @@ body.has-hero:not(.is-scrolled):not(.nav-open) .nav-toggle { color: #fff; }
 @media (max-width: 560px) { .quote-form { grid-template-columns: 1fr; } }
 .field { display: flex; flex-direction: column; gap: 6px; margin: 0; border: 0; padding: 0; min-width: 0; }
 .field--full { grid-column: 1 / -1; }
+.field[hidden] { display: none; }
 .field label, .field legend { font-family: var(--font-head); font-weight: 500; font-size: .92rem; padding: 0; }
 .field label span { color: var(--orange); }
 .field input, .field select, .field textarea { width: 100%; padding: 13px 15px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--light); transition: border-color .2s, background-color .2s, box-shadow .2s; }
